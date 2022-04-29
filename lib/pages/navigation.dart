@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gngm_web/pages/nav_Pages/order/orderlist.dart';
 import '../misc/export.dart';
 
 // import 'package:flutter/material.dart' as m;
@@ -12,7 +13,7 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-int index = 1;
+int index = 2;
 
 class _NavigationPageState extends State<NavigationPage> {
   @override
@@ -22,6 +23,9 @@ class _NavigationPageState extends State<NavigationPage> {
         title: Text('GNG Merchent'),
       ),
       pane: NavigationPane(
+        size: NavigationPaneSize(
+          openMaxWidth: 200,
+        ),
         selected: index,
         onChanged: (int newIndex) {
           setState(() {
@@ -46,6 +50,11 @@ class _NavigationPageState extends State<NavigationPage> {
           ),
           PaneItemSeparator(),
           PaneItem(
+            icon: Icon(FluentIcons.activate_orders),
+            title: Text('Orders'),
+          ),
+          PaneItemSeparator(),
+          PaneItem(
             icon: Icon(FluentIcons.lightning_bolt),
             title: Text('Flash'),
           ),
@@ -64,6 +73,7 @@ class _NavigationPageState extends State<NavigationPage> {
           Dash(),
           Products(),
           AddProduct(),
+          OrderList(),
           Flash(),
           Settings(),
         ],
