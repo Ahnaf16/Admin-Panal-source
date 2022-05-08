@@ -13,7 +13,7 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-int index = 2;
+int index = 4;
 
 class _NavigationPageState extends State<NavigationPage> {
   @override
@@ -72,7 +72,7 @@ class _NavigationPageState extends State<NavigationPage> {
         children: [
           Dash(),
           Products(),
-          AddProduct(),
+          Flash(),
           OrderList(),
           Flash(),
           Settings(),

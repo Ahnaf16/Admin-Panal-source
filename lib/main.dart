@@ -22,6 +22,13 @@ class MyApp extends StatelessWidget {
         cardColor: Colors.grey[10],
         visualDensity: VisualDensity.adaptivePlatformDensity,
         buttonTheme: buttonTheme(),
+        pillButtonBarTheme: PillButtonBarThemeData(
+          backgroundColor: Colors.transparent,
+          selectedColor: ButtonState.all(Colors.blue),
+          selectedTextStyle: TextStyle(color: Colors.white),
+          unselectedColor: ButtonState.all(Colors.grey[50]),
+          unselectedTextStyle: TextStyle(color: Colors.black),
+        ),
       ),
       // home: const NavigationPage(),
       routes: {
@@ -39,7 +46,7 @@ class MyApp extends StatelessWidget {
 
 ButtonThemeData buttonTheme() {
   return ButtonThemeData(
-    iconButtonStyle: ButtonStyle(
+    outlinedButtonStyle: ButtonStyle(
       shape: ButtonState.all<OutlinedBorder>(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
