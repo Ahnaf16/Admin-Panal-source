@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gngm_web/pages/nav_Pages/products/edit_product.dart';
 
 class ProductModel {
   final String name;
@@ -54,7 +55,12 @@ class ProductModel {
                 IconButton(
                   icon: const Icon(FluentIcons.edit_solid12),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/edit_product');
+                    Navigator.push(
+                      context,
+                      FluentPageRoute(
+                        builder: (_) => const EditProduct(),
+                      ),
+                    );
                   },
                   style: ButtonStyle(
                     iconSize: ButtonState.all(20),

@@ -29,17 +29,26 @@ class MyApp extends StatelessWidget {
           unselectedColor: ButtonState.all(Colors.grey[50]),
           unselectedTextStyle: TextStyle(color: Colors.black),
         ),
+        chipTheme: ChipThemeData(
+          decoration: ButtonState.all(
+            BoxDecoration(
+              color: Colors.grey[40],
+              borderRadius: BorderRadius.circular(50),
+            ),
+          ),
+        ),
       ),
-      // home: const NavigationPage(),
-      routes: {
-        '/': (context) => const NavigationPage(),
-        '/dash': (context) => const Dash(),
-        '/flash': (context) => const Flash(),
-        '/product': (context) => const Products(),
-        '/add_products': (context) => const AddProduct(),
-        '/settings': (context) => const Settings(),
-        '/edit_product': (context) => const EditProduct(),
-      },
+      home: const NavigationPage(),
+      // routes: {
+      //   '/': (context) => const NavigationPage(),
+      //   '/dash': (context) => const Dash(),
+      //   '/flash': (context) => const Flash(),
+      //   '/product': (context) => const Products(),
+      //   '/add_products': (context) => const AddProduct(),
+      //   '/settings': (context) => const Settings(),
+      //   '/edit_product': (context) => const EditProduct(),
+      //   '/order_details': (context) => const OrderDetails(),
+      // },
     );
   }
 }

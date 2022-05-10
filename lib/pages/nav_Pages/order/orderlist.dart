@@ -3,6 +3,8 @@
 import 'dart:developer' as d;
 import 'dart:math';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gngm_web/misc/export.dart';
+import 'package:gngm_web/pages/nav_Pages/order/edit_order.dart';
 
 class OrderList extends StatefulWidget {
   const OrderList({Key? key}) : super(key: key);
@@ -30,6 +32,7 @@ class _OrderListState extends State<OrderList> {
     'COD',
   ];
   int payIndex = 0;
+
   late ScrollController scrollController;
   bool showScrollButton = false;
 
@@ -189,7 +192,8 @@ class _OrderListState extends State<OrderList> {
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Text(
-                                    'Delivered',
+                                    allStatus[
+                                        Random().nextInt(allStatus.length)],
                                     style: TextStyle(
                                       color: Colors.green.darkest,
                                       fontWeight: FontWeight.bold,
@@ -205,13 +209,31 @@ class _OrderListState extends State<OrderList> {
                                         MenuFlyoutItem(
                                           leading: Icon(FluentIcons.view),
                                           text: Text('View'),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            Navigator.push(
+                                              context,
+                                              FluentPageRoute(
+                                                builder: (context) =>
+                                                    OrderDetails(),
+                                              ),
+                                            );
+                                          },
                                         ),
                                         MenuFlyoutSeparator(),
                                         MenuFlyoutItem(
                                           leading: Icon(FluentIcons.edit),
                                           text: Text('Edit'),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            Navigator.push(
+                                              context,
+                                              FluentPageRoute(
+                                                builder: (context) =>
+                                                    EditOrders(),
+                                              ),
+                                            );
+                                          },
                                         )
                                       ],
                                     );

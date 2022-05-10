@@ -13,13 +13,14 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-int index = 4;
+int index = 3;
 
 class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return NavigationView(
       appBar: NavigationAppBar(
+        automaticallyImplyLeading: false,
         title: Text('GNG Merchent'),
       ),
       pane: NavigationPane(
@@ -68,11 +69,13 @@ class _NavigationPageState extends State<NavigationPage> {
         ],
       ),
       content: NavigationBody(
+        transitionBuilder: (child, animation) =>
+            EntrancePageTransition(child: child, animation: animation),
         index: index,
         children: [
           Dash(),
           Products(),
-          Flash(),
+          AddProduct(),
           OrderList(),
           Flash(),
           Settings(),
