@@ -4,7 +4,6 @@ import 'dart:developer' as d;
 import 'dart:math';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gngm_web/misc/export.dart';
-import 'package:gngm_web/pages/nav_Pages/order/edit_order.dart';
 
 class OrderList extends StatefulWidget {
   const OrderList({Key? key}) : super(key: key);
@@ -65,6 +64,7 @@ class _OrderListState extends State<OrderList> {
       ),
       content: Stack(
         children: [
+          //----------------------main
           SingleChildScrollView(
             physics: ScrollPhysics(),
             controller: scrollController,
@@ -75,11 +75,13 @@ class _OrderListState extends State<OrderList> {
                   width: MediaQuery.of(context).size.width / 1.4,
                   child: Card(
                     borderRadius: BorderRadius.circular(10),
+                    //-----------------main colume
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Row(
                           children: [
+                            //-----------------search
                             Expanded(
                               flex: 2,
                               child: TextBox(
@@ -99,6 +101,7 @@ class _OrderListState extends State<OrderList> {
                               ),
                             ),
                             SizedBox(width: 20),
+                            //-----------------status
                             Expanded(
                               child: Container(
                                 decoration: BoxDecoration(
@@ -129,6 +132,7 @@ class _OrderListState extends State<OrderList> {
                           ],
                         ),
                         SizedBox(height: 20),
+                        //-----------------pay method
                         PillButtonBar(
                           selected: payIndex,
                           onChanged: (value) {
@@ -145,6 +149,7 @@ class _OrderListState extends State<OrderList> {
                         SizedBox(height: 20),
                         Divider(),
                         SizedBox(height: 20),
+                        //-----------------order list row
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
@@ -161,8 +166,8 @@ class _OrderListState extends State<OrderList> {
                         SizedBox(height: 10),
                         Divider(),
                         SizedBox(height: 10),
+                        //-----------------order list
                         ListView.separated(
-                          // controller: scrollController,
                           shrinkWrap: true,
                           itemCount: 20,
                           separatorBuilder: (BuildContext context, int index) {
@@ -175,72 +180,40 @@ class _OrderListState extends State<OrderList> {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                //-----------------id
                                 Text('${Random().nextInt(10000)}'),
+                                //-----------------name
                                 Text(
                                   'Ahnaf Sakil',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                                //-----------------contact
                                 Text('ahnafsakil9@gmail.com'),
+                                //-----------------total
                                 Text('\$ ${Random().nextInt(10000)}'),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.lightest,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                    allStatus[
-                                        Random().nextInt(allStatus.length)],
-                                    style: TextStyle(
-                                      color: Colors.green.darkest,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                //-----------------status
+                                Chip2(
+                                  text: allStatus[
+                                      Random().nextInt(allStatus.length)],
+                                  backgroundColor:
+                                      Color.fromARGB(255, 188, 243, 201),
+                                  textcolor: Colors.green.darkest,
                                 ),
+                                //-----------------date
                                 Text('12.04.22'),
-                                Flyout(
-                                  openMode: FlyoutOpenMode.press,
-                                  content: (context) {
-                                    return MenuFlyout(
-                                      items: [
-                                        MenuFlyoutItem(
-                                          leading: Icon(FluentIcons.view),
-                                          text: Text('View'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            Navigator.push(
-                                              context,
-                                              FluentPageRoute(
-                                                builder: (context) =>
-                                                    OrderDetails(),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                        MenuFlyoutSeparator(),
-                                        MenuFlyoutItem(
-                                          leading: Icon(FluentIcons.edit),
-                                          text: Text('Edit'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            Navigator.push(
-                                              context,
-                                              FluentPageRoute(
-                                                builder: (context) =>
-                                                    EditOrders(),
-                                              ),
-                                            );
-                                          },
-                                        )
-                                      ],
+                                //-----------------action
+                                IconButton(
+                                  icon: Icon(FluentIcons.view),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      FluentPageRoute(
+                                        builder: (context) => OrderDetails(),
+                                      ),
                                     );
                                   },
-                                  child: Icon(
-                                    FluentIcons.more,
-                                  ),
                                 ),
                               ],
                             );
@@ -253,6 +226,7 @@ class _OrderListState extends State<OrderList> {
               ),
             ),
           ),
+          //------------------scroll to top button
           showScrollButton == true
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 20),
@@ -288,3 +262,46 @@ class _OrderListState extends State<OrderList> {
     );
   }
 }
+
+
+// Flyout(
+//   openMode: FlyoutOpenMode.press,
+//   content: (context) {
+//     return MenuFlyout(
+//       items: [
+//         MenuFlyoutItem(
+//           leading: Icon(FluentIcons.view),
+//           text: Text('View'),
+//           onPressed: () {
+//             Navigator.pop(context);
+//             Navigator.push(
+//               context,
+//               FluentPageRoute(
+//                 builder: (context) =>
+//                     OrderDetails(),
+//               ),
+//             );
+//           },
+//         ),
+//         MenuFlyoutSeparator(),
+//         MenuFlyoutItem(
+//           leading: Icon(FluentIcons.edit),
+//           text: Text('Edit'),
+//           onPressed: () {
+//             Navigator.pop(context);
+//             Navigator.push(
+//               context,
+//               FluentPageRoute(
+//                 builder: (context) =>
+//                     EditOrders(),
+//               ),
+//             );
+//           },
+//         )
+//       ],
+//     );
+//   },
+//   child: Icon(
+//     FluentIcons.more,
+//   ),
+// ),

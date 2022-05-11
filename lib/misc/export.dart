@@ -9,3 +9,5 @@ export 'img_view.dart';
 export 'package:gngm_web/pages/nav_Pages/products/preview.dart';
 export 'package:gngm_web/pages/nav_Pages/order/order_details.dart';
 export 'package:gngm_web/pages/nav_Pages/order/edit_order.dart';
+export 'package:gngm_web/Classes/chip2.dart';
+export 'package:gngm_web/Classes/datatable.dart';

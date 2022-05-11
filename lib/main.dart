@@ -1,11 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'misc/export.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ProviderScope(
+      child: const MyApp(),
+    ),
+  );
+  configLoading();
 }
 
 class MyApp extends StatelessWidget {
@@ -38,6 +45,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      builder: EasyLoading.init(),
       home: const NavigationPage(),
       // routes: {
       //   '/': (context) => const NavigationPage(),
@@ -79,4 +87,15 @@ ButtonThemeData buttonTheme() {
       ),
     ),
   );
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.ring
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 30.0
+    ..userInteractions = true
+    ..dismissOnTap = false;
 }

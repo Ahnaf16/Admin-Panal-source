@@ -1,16 +1,32 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:developer';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart' as m;
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gngm_web/misc/export.dart';
 import 'package:intl/intl.dart';
 
-class OrderDetails extends StatelessWidget {
-  const OrderDetails({Key? key}) : super(key: key);
+import '../../../services/provider.dart';
+
+class OrderDetails extends ConsumerWidget {
+  OrderDetails({Key? key}) : super(key: key);
+  final flyoutController = FlyoutController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     Typography typeTheme = FluentTheme.of(context).typography;
+
+    final enableEdit = ref.watch(enableEditProvider);
+    final status = ref.watch(orderStstusChangeerProvider);
+    final allStatus = ref.watch(allStatusProvider);
+
+    changeEnableEdit() {
+      return ref.read(enableEditProvider.state).state =
+          !ref.read(enableEditProvider.state).state;
+    }
+
     return NavigationView(
       appBar: NavigationAppBar(
         leading: IconButton(
@@ -29,11 +45,11 @@ class OrderDetails extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               child: Card(
                 borderRadius: BorderRadius.circular(10),
-                //------------------------ main colume
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
                   ),
+                  //------------------------ main colume
                   child: Column(
                     children: [
                       //------------------------ header
@@ -42,7 +58,7 @@ class OrderDetails extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(FluentIcons.calendar),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Text(
                             DateFormat('EEE, LLL d. y, h:mm a')
                                 .format(DateTime.now()),
@@ -57,37 +73,70 @@ class OrderDetails extends StatelessWidget {
                           Spacer(
                             flex: 2,
                           ),
-                          //----------------------------status
+                          // ----------------------------status
 
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: Colors.green.lightest,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              'Pickup',
-                              style: TextStyle(
-                                color: Colors.green.darkest,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                          enableEdit
+                              ? Expanded(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[10],
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                        color: Colors.grey[100],
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Combobox<String>(
+                                      placeholder: const Text('Change Status'),
+                                      isExpanded: true,
+                                      items: allStatus
+                                          .map((e) => ComboboxItem<String>(
+                                                value: e,
+                                                child: Text(e),
+                                              ))
+                                          .toList(),
+                                      value: status,
+                                      onChanged: (value) {
+                                        ref
+                                            .read(orderStstusChangeerProvider
+                                                .state)
+                                            .state = value;
+                                      },
+                                    ),
+                                  ),
+                                )
+                              : Chip2(
+                                  text: 'Pending',
+                                  backgroundColor:
+                                      Color.fromARGB(255, 188, 243, 201),
+                                  textcolor: Colors.green.darkest,
+                                ),
+
                           SizedBox(width: 10),
 
-                          FilledButton(
-                            child: Text('Edit'),
-                            onPressed: () => Navigator.push(
-                              context,
-                              FluentPageRoute(
-                                builder: (_) => EditOrders(),
-                              ),
-                            ),
+                          //----------------------------edit button
+                          OutlinedButton(
+                            child: Text(enableEdit ? 'Cancel' : 'Edit'),
+                            onPressed: () {
+                              changeEnableEdit();
+                            },
                             style: FluentTheme.of(context)
                                 .buttonTheme
-                                .filledButtonStyle,
+                                .outlinedButtonStyle,
                           ),
+                          SizedBox(width: 10),
+                          //----------------------------save button
+                          enableEdit
+                              ? OutlinedButton(
+                                  child: Text('Save Edits'),
+                                  onPressed: () {
+                                    changeEnableEdit();
+                                  },
+                                  style: FluentTheme.of(context)
+                                      .buttonTheme
+                                      .outlinedButtonStyle,
+                                )
+                              : SizedBox(),
                         ],
                       ),
                       //-------------------------invoice number
@@ -104,7 +153,19 @@ class OrderDetails extends StatelessWidget {
                           SizedBox(width: 10),
                           IconButton(
                             icon: Icon(FluentIcons.copy),
-                            onPressed: () {},
+                            onPressed: () {
+                              Clipboard.setData(
+                                ClipboardData(
+                                  text: 'GnG47545726523',
+                                ),
+                              ).whenComplete(
+                                () => EasyLoading.showToast(
+                                  'Copied to Clipboard',
+                                  toastPosition:
+                                      EasyLoadingToastPosition.bottom,
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -115,14 +176,9 @@ class OrderDetails extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            height: 40,
-                            width: 40,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey[50],
-                            ),
+                          CircleAvatar(
+                            foregroundColor: Colors.black,
+                            backgroundColor: Colors.grey[50],
                             child: Icon(FluentIcons.contact),
                           ),
                           SizedBox(width: 10),
@@ -144,16 +200,12 @@ class OrderDetails extends StatelessWidget {
                           Spacer(
                             flex: 1,
                           ),
-                          Container(
-                            height: 40,
-                            width: 40,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey[50],
-                            ),
+                          CircleAvatar(
+                            foregroundColor: Colors.black,
+                            backgroundColor: Colors.grey[50],
                             child: Icon(FluentIcons.delivery_truck),
                           ),
+
                           SizedBox(width: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,16 +224,12 @@ class OrderDetails extends StatelessWidget {
                           Spacer(
                             flex: 1,
                           ),
-                          Container(
-                            height: 40,
-                            width: 40,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey[50],
-                            ),
+                          CircleAvatar(
+                            foregroundColor: Colors.black,
+                            backgroundColor: Colors.grey[50],
                             child: Icon(FluentIcons.p_b_i_anomalies_marker),
                           ),
+
                           SizedBox(width: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,137 +263,42 @@ class OrderDetails extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              m.DataTable(
-                                showBottomBorder: true,
-                                dividerThickness: 2,
-                                dataRowHeight: 70,
-                                columns: [
-                                  m.DataColumn(
-                                    label: Text('Product'),
-                                  ),
-                                  m.DataColumn(
-                                    numeric: true,
-                                    label: Text('Quantity'),
-                                  ),
-                                  m.DataColumn(
-                                    numeric: true,
-                                    label: Text('Price'),
-                                  ),
-                                  m.DataColumn(
-                                    numeric: true,
-                                    label: Text('Total'),
-                                  ),
-                                ],
-                                rows: List.generate(
-                                  products.length,
-                                  (index) => m.DataRow(
-                                    cells: [
-                                      m.DataCell(
-                                        Row(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              child: Image.network(
-                                                products[index]['img'],
-                                                height: 60,
-                                                width: 60,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            Text(
-                                              products[index]['name'],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      m.DataCell(
-                                        Text(products[index]['quantity']
-                                            .toString()),
-                                      ),
-                                      m.DataCell(
-                                        Text('\$ ${products[index]['price']}'),
-                                      ),
-                                      m.DataCell(
-                                        Text('\$ ${products[index]['total']}'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                              //-------------------------Data table
+                              OrderDataTable(
+                                rowlength: products.length,
+                                data: products,
                               ),
                               SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Subtotal :',
-                                        style: typeTheme.bodyStrong,
-                                      ),
-                                      Text(
-                                        'Delivary charge :',
-                                        style: typeTheme.bodyStrong,
-                                      ),
-                                      Text(
-                                        'Total :',
-                                        style: typeTheme.bodyLarge!.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        'Padi Ammount :',
-                                        style: typeTheme.bodyStrong,
-                                      ),
-                                      Text(
-                                        'Due :',
-                                        style: typeTheme.bodyStrong,
-                                      )
-                                    ],
+                                  cashInfo(
+                                    CrossAxisAlignment.start,
+                                    typeTheme,
+                                    'Subtotal :',
+                                    'Delivary charge :',
+                                    'Total :',
+                                    'Padi Ammount :  ',
+                                    'Due :',
+                                    false,
+                                    enableEdit,
                                   ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        '\$ ' +
-                                            products
-                                                .fold<num>(
-                                                  0,
-                                                  (a, b) => a + b['total'],
-                                                )
-                                                .toString(),
-                                        style: typeTheme.bodyStrong,
-                                      ),
-                                      Text(
-                                        ' \$ 60',
-                                        style: typeTheme.bodyStrong,
-                                      ),
-                                      Text(
-                                        '\$ ' +
-                                            products
-                                                .fold<num>(
-                                                  60,
-                                                  (a, b) => a + b['total'],
-                                                )
-                                                .toString(),
-                                        style: typeTheme.bodyStrong!.copyWith(
-                                          fontSize: 24,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        '\$ 500',
-                                        style: typeTheme.bodyStrong,
-                                      ),
-                                      Text(
-                                        '\$ 80',
-                                        style: typeTheme.bodyStrong,
-                                      )
-                                    ],
+                                  cashInfo(
+                                    CrossAxisAlignment.end,
+                                    typeTheme,
+                                    '\$ ${products.fold<num>(
+                                      0,
+                                      (a, b) => a + b['total'],
+                                    )}',
+                                    ' \$ 60',
+                                    '\$ ${products.fold<num>(
+                                      60,
+                                      (a, b) => a + b['total'],
+                                    )}',
+                                    '\$ 500',
+                                    '\$ 80',
+                                    true,
+                                    enableEdit,
                                   ),
                                 ],
                               ),
@@ -361,6 +314,58 @@ class OrderDetails extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Column cashInfo(
+    CrossAxisAlignment crossAxisAlignment,
+    Typography typeTheme,
+    String t1,
+    String t2,
+    String t3,
+    String t4,
+    String t5,
+    bool isEditable,
+    bool enableEdit,
+  ) {
+    return Column(
+      crossAxisAlignment: crossAxisAlignment,
+      children: [
+        Text(
+          t1,
+          style: typeTheme.bodyStrong,
+        ),
+        Text(
+          t2,
+          style: typeTheme.bodyStrong,
+        ),
+        Text(
+          t3,
+          style: typeTheme.bodyLarge!.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        SizedBox(height: 10),
+        isEditable
+            ? SizedBox(
+                width: 100,
+                child: TextBox(
+                  padding: kTextBoxPadding.copyWith(right: 0),
+                  textAlign: TextAlign.end,
+                  enabled: enableEdit,
+                  placeholder: t4,
+                  placeholderStyle: typeTheme.bodyStrong,
+                ),
+              )
+            : Text(
+                t4,
+                style: typeTheme.bodyStrong,
+              ),
+        Text(
+          t5,
+          style: typeTheme.bodyStrong,
+        )
+      ],
     );
   }
 }

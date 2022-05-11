@@ -3,7 +3,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:nanoid/nanoid.dart';
 
-import '../../../misc/export.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
