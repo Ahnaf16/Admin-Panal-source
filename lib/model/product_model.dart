@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gngm_web/pages/nav_Pages/products/edit_product.dart';
 
 class ProductModel {
@@ -103,6 +104,11 @@ class ProductModel {
                             ),
                             child: const Text('Delete'),
                             onPressed: () {
+                              EasyLoading.showToast(
+                                'Product Deleted',
+                                toastPosition: EasyLoadingToastPosition.bottom,
+                              );
+
                               Navigator.pop(context);
                             },
                           ),

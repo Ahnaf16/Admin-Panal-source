@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
     return FluentApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+      themeMode: ThemeMode.dark,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.grey[30],
         accentColor: Colors.blue,
@@ -95,7 +96,12 @@ void configLoading() {
     ..indicatorType = EasyLoadingIndicatorType.ring
     ..loadingStyle = EasyLoadingStyle.dark
     ..indicatorSize = 45.0
-    ..radius = 30.0
+    ..radius = 15.0
     ..userInteractions = true
-    ..dismissOnTap = false;
+    ..dismissOnTap = false
+    // ..progressColor = Colors.blue
+    // ..backgroundColor = Colors.green
+    // ..indicatorColor = Colors.yellow
+    // ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5);
 }

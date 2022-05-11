@@ -54,6 +54,9 @@ class OrderDataTable extends StatelessWidget {
                     const SizedBox(width: 10),
                     Text(
                       data[inx]['name'], // 'Product Name',
+                      style: const TextStyle(
+                        fontSize: 20,
+                      ),
                     ),
                   ],
                 ),

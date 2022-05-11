@@ -12,9 +12,35 @@ class ImgView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
-      content: Hero(
-        tag: tag,
-        child: Image.network(url),
+      header: PageHeader(
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: IconButton(
+            icon: const Icon(
+              FluentIcons.back_to_window,
+              size: 20,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        title: const Text('Image Preview'),
+      ),
+      content: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Hero(
+              tag: tag,
+              child: Image.network(
+                url,
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

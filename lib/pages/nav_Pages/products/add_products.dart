@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:gngm_web/misc/export.dart';
+import 'package:gngm_web/pages/nav_Pages/products/product_preview.dart';
 import 'package:nanoid/nanoid.dart';
-
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
@@ -34,6 +36,7 @@ class _AddProductState extends State<AddProduct> {
   @override
   void dispose() {
     flyoutController.dispose();
+    pIDController.dispose();
     super.dispose();
   }
 
@@ -44,7 +47,41 @@ class _AddProductState extends State<AddProduct> {
         title: const Text('Add Product'),
         commandBar: FilledButton(
           child: const Text('Publish Product'),
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (_) => ContentDialog(
+                title: Text('Preview'),
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width / 1.3,
+                ),
+                content: ProductPreview(),
+                actions: [
+                  TextButton(
+                    child: const Text('Confirm Update'),
+                    onPressed: () {
+                      EasyLoading.showToast(
+                        'Product Updated',
+                        toastPosition: EasyLoadingToastPosition.bottom,
+                      );
+                      Navigator.pop(context);
+                    },
+                  ),
+                  TextButton(
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: Colors.warningPrimaryColor,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
           style: FluentTheme.of(context).buttonTheme.filledButtonStyle,
         ),
       ),
@@ -52,12 +89,14 @@ class _AddProductState extends State<AddProduct> {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(20),
+            //---main row
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 1.8,
+                  //-------------left side
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
@@ -66,6 +105,7 @@ class _AddProductState extends State<AddProduct> {
                         borderRadius: BorderRadius.circular(10),
                         child: Padding(
                           padding: const EdgeInsets.all(10),
+                          //------------- name and brand
                           child: Column(
                             children: [
                               TextBox(
@@ -95,6 +135,7 @@ class _AddProductState extends State<AddProduct> {
                           ),
                         ),
                       ),
+                      //-------------Description
                       SizedBox(height: 20),
                       Card(
                         borderRadius: BorderRadius.circular(10),
@@ -119,12 +160,14 @@ class _AddProductState extends State<AddProduct> {
                         ),
                       ),
                       SizedBox(height: 20),
+                      //-------------img selection
                       Card(
                         borderRadius: BorderRadius.circular(10),
                         child: InfoLabel(
                           label: 'Add Image',
                           child: Row(
                             children: [
+                              //-------------add img button
                               IconButton(
                                   icon: Icon(FluentIcons.file_image),
                                   onPressed: () {},
@@ -146,6 +189,7 @@ class _AddProductState extends State<AddProduct> {
                                     iconSize: ButtonState.all(30),
                                   )),
                               SizedBox(width: 20),
+                              //-------------img preview
                               Row(
                                 children: List.generate(
                                   3,
@@ -163,6 +207,15 @@ class _AddProductState extends State<AddProduct> {
                                                 text: Text('View'),
                                                 onPressed: () {
                                                   flyoutController.close();
+                                                  Navigator.push(
+                                                    context,
+                                                    FluentPageRoute(
+                                                      builder: (_) => ImgView(
+                                                          tag: index.toString(),
+                                                          url:
+                                                              'https://picsum.photos/200/300?random=${index + 1}'),
+                                                    ),
+                                                  );
                                                 },
                                               ),
                                               MenuFlyoutItem(
@@ -198,6 +251,7 @@ class _AddProductState extends State<AddProduct> {
                     ],
                   ),
                 ),
+                //-------------right side
                 const SizedBox(width: 20),
                 Expanded(
                   child: Card(
@@ -217,6 +271,7 @@ class _AddProductState extends State<AddProduct> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        //-------------price
         TextBox(
           header: 'Price',
           decoration: BoxDecoration(
@@ -236,6 +291,7 @@ class _AddProductState extends State<AddProduct> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Default Discount'),
+            //----------------------discount switch
             ToggleSwitch(
               checked: discountSwitch,
               onChanged: (value) {
@@ -247,6 +303,7 @@ class _AddProductState extends State<AddProduct> {
           ],
         ),
         SizedBox(height: 10),
+        //-----------------duscount box
         discountSwitch
             ? TextBox(
                 enabled: discountSwitch,
@@ -265,6 +322,7 @@ class _AddProductState extends State<AddProduct> {
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Divider(),
         ),
+        //----------------categorys
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -272,6 +330,7 @@ class _AddProductState extends State<AddProduct> {
               'Category',
               style: FluentTheme.of(context).typography.bodyLarge,
             ),
+            //-----------------clear categorys button
             cIndex == -1
                 ? Text('')
                 : IconButton(
@@ -286,6 +345,7 @@ class _AddProductState extends State<AddProduct> {
                   )
           ],
         ),
+        //-------------------categorys radio button
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(
@@ -306,6 +366,7 @@ class _AddProductState extends State<AddProduct> {
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Divider(),
         ),
+        //-----------------product id
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -324,6 +385,7 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
             ),
+            //-----------------generate id button
             SizedBox(width: 10),
             OutlinedButton(
               child: Text('Generate ID'),
