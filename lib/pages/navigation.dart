@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gngm_web/pages/auth/login.dart';
 import 'package:gngm_web/pages/nav_Pages/order/orderlist.dart';
 import '../misc/export.dart';
 
@@ -13,7 +14,7 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-int index = 3;
+int index = 1;
 
 class _NavigationPageState extends State<NavigationPage> {
   @override
@@ -57,11 +58,25 @@ class _NavigationPageState extends State<NavigationPage> {
           PaneItemSeparator(),
           PaneItem(
             icon: Icon(FluentIcons.lightning_bolt),
+            title: Text('Campaign'),
+          ),
+          PaneItemSeparator(),
+          PaneItem(
+            icon: Icon(FluentIcons.lightning_bolt),
             title: Text('Flash'),
+          ),
+          PaneItemSeparator(),
+          PaneItem(
+            icon: Icon(FluentIcons.lightning_bolt),
+            title: Text('Newsfeed'),
           ),
         ],
         footerItems: [
           PaneItemSeparator(),
+          PaneItem(
+            icon: Icon(FluentIcons.signin),
+            title: Text('LogIn'),
+          ),
           PaneItem(
             icon: Icon(FluentIcons.settings),
             title: Text('Settings'),
@@ -77,7 +92,10 @@ class _NavigationPageState extends State<NavigationPage> {
           Products(),
           AddProduct(),
           OrderList(),
+          Campaign(),
           Flash(),
+          Newsfeed(),
+          LoginPage(),
           Settings(),
         ],
       ),
