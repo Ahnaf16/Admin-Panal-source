@@ -15,6 +15,7 @@ class Newsfeed extends StatelessWidget {
         title: Text('Newsfeed'),
         commandBar: Row(
           children: [
+            //------------------add button
             OutlinedButton(
               child: Row(
                 children: const [
@@ -26,6 +27,7 @@ class Newsfeed extends StatelessWidget {
               onPressed: () {},
             ),
             SizedBox(width: 10),
+            //------------------publish button
             FilledButton(
               child: Text('Publish'),
               onPressed: () {},
@@ -40,30 +42,35 @@ class Newsfeed extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              //------------------add image button
               InfoLabel(
                 label: 'Add Image',
-                child: IconButton(
-                  icon: Icon(FluentIcons.file_image),
-                  onPressed: () {},
-                  style: ButtonStyle(
-                    padding: ButtonState.all<EdgeInsets>(
-                      EdgeInsets.all(20),
-                    ),
-                    shape: ButtonState.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: IconButton(
+                    icon: Icon(FluentIcons.file_image),
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      padding: ButtonState.all<EdgeInsets>(
+                        EdgeInsets.all(20),
                       ),
-                    ),
-                    border: ButtonState.all(
-                      BorderSide(
-                        color: Colors.grey[100],
-                        width: 2,
+                      shape: ButtonState.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
+                      border: ButtonState.all(
+                        BorderSide(
+                          color: Colors.grey[100],
+                          width: 2,
+                        ),
+                      ),
+                      iconSize: ButtonState.all(30),
                     ),
-                    iconSize: ButtonState.all(30),
                   ),
                 ),
               ),
+              //------------------img preview
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Flyout(
@@ -93,6 +100,7 @@ class Newsfeed extends StatelessWidget {
             ],
           ),
           SizedBox(height: 20),
+          //------------------newsfeed
           TextBox(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),

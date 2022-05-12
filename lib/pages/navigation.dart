@@ -57,7 +57,7 @@ class _NavigationPageState extends State<NavigationPage> {
           ),
           PaneItemSeparator(),
           PaneItem(
-            icon: Icon(FluentIcons.lightning_bolt),
+            icon: Icon(FluentIcons.campaign_template),
             title: Text('Campaign'),
           ),
           PaneItemSeparator(),
@@ -67,7 +67,7 @@ class _NavigationPageState extends State<NavigationPage> {
           ),
           PaneItemSeparator(),
           PaneItem(
-            icon: Icon(FluentIcons.lightning_bolt),
+            icon: Icon(FluentIcons.news),
             title: Text('Newsfeed'),
           ),
         ],
@@ -83,21 +83,23 @@ class _NavigationPageState extends State<NavigationPage> {
           ),
         ],
       ),
-      content: NavigationBody(
-        transitionBuilder: (child, animation) =>
-            EntrancePageTransition(child: child, animation: animation),
-        index: index,
-        children: [
-          Dash(),
-          Products(),
-          AddProduct(),
-          OrderList(),
-          Campaign(),
-          Flash(),
-          Newsfeed(),
-          LoginPage(),
-          Settings(),
-        ],
+      content: FocusTraversalGroup(
+        child: NavigationBody(
+          transitionBuilder: (child, animation) =>
+              EntrancePageTransition(child: child, animation: animation),
+          index: index,
+          children: [
+            Dash(),
+            Products(),
+            AddProduct(),
+            OrderList(),
+            Campaign(),
+            Flash(),
+            Newsfeed(),
+            LoginPage(),
+            Settings(),
+          ],
+        ),
       ),
     );
   }

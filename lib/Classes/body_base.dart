@@ -10,10 +10,13 @@ class BaseBody extends StatelessWidget {
     this.elevation = 4.0,
     this.bottomPadding = 20,
     this.scrollController,
+    this.height,
   }) : super(key: key);
 
   final List<Widget> children;
   final num? widthfactor;
+  final double? height;
+
   final MainAxisAlignment? mainAxisAlignment;
   final CrossAxisAlignment? crossAxisAlignment;
   final double? elevation;
@@ -28,6 +31,7 @@ class BaseBody extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.only(bottom: bottomPadding!),
           child: SizedBox(
+            height: height,
             width: MediaQuery.of(context).size.width / widthfactor!,
             child: Card(
               elevation: elevation!,

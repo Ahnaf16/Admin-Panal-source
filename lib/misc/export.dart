@@ -12,7 +12,6 @@ export 'package:gngm_web/Classes/chip2.dart';
 export 'package:gngm_web/Classes/datatable.dart';
 export 'package:gngm_web/Classes/dual_text.dart';
 export 'package:gngm_web/Classes/body_base.dart';
-export 'package:gngm_web/pages/nav_Pages/campaign/add_campaign.dart';
 export 'package:gngm_web/pages/nav_Pages/campaign/campaign.dart';
 export 'package:gngm_web/pages/nav_Pages/newsfeed/newsfeed.dart';
 export 'package:gngm_web/pages/nav_Pages/newsfeed/add_newsfeed.dart';

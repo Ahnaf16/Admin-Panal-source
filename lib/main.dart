@@ -25,6 +25,13 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       themeMode: ThemeMode.dark,
       theme: ThemeData(
+        focusTheme: FocusThemeData(
+          borderRadius: BorderRadius.circular(10),
+          primaryBorder: BorderSide(
+            color: Colors.grey.withOpacity(0.5),
+            width: 1,
+          ),
+        ),
         scaffoldBackgroundColor: Colors.grey[30],
         accentColor: Colors.blue,
         cardColor: Colors.grey[10],
