@@ -1,11 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gngm_web/pages/auth/login.dart';
 import 'package:gngm_web/pages/nav_Pages/order/orderlist.dart';
 import '../misc/export.dart';
-
-// import 'package:flutter/material.dart' as m;
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({Key? key}) : super(key: key);
@@ -22,10 +18,29 @@ class _NavigationPageState extends State<NavigationPage> {
     return NavigationView(
       appBar: NavigationAppBar(
         automaticallyImplyLeading: false,
-        title: Text('GNG Merchent'),
+        title: const Text('Admin Panal'),
+        actions: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const Text('Debug'),
+            Wrap(
+              children: [
+                Text(
+                  'Height: ' + MediaQuery.of(context).size.height.toString(),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  'Width: ' + MediaQuery.of(context).size.width.toString(),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
       pane: NavigationPane(
-        size: NavigationPaneSize(
+        size: const NavigationPaneSize(
           openMaxWidth: 200,
         ),
         selected: index,
@@ -34,59 +49,59 @@ class _NavigationPageState extends State<NavigationPage> {
             index = newIndex;
           });
         },
-        header: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        header: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
           child: FlutterLogo(
             style: FlutterLogoStyle.horizontal,
             size: 100,
           ),
         ),
         displayMode: PaneDisplayMode.auto,
-        indicator: StickyNavigationIndicator(),
+        indicator: const StickyNavigationIndicator(),
         items: [
           PaneItem(
-            icon: Icon(FluentIcons.view_dashboard),
-            title: Text('Dashboard'),
+            icon: const Icon(FluentIcons.view_dashboard),
+            title: const Text('Dashboard'),
           ),
           PaneItemSeparator(),
           PaneItem(
-            icon: Icon(FluentIcons.product_list),
-            title: Text('Product'),
+            icon: const Icon(FluentIcons.product_list),
+            title: const Text('Product'),
           ),
           PaneItem(
-            icon: Icon(FluentIcons.add_in),
-            title: Text('Add Product'),
-          ),
-          PaneItemSeparator(),
-          PaneItem(
-            icon: Icon(FluentIcons.activate_orders),
-            title: Text('Orders'),
+            icon: const Icon(FluentIcons.add_in),
+            title: const Text('Add Product'),
           ),
           PaneItemSeparator(),
           PaneItem(
-            icon: Icon(FluentIcons.campaign_template),
-            title: Text('Campaign'),
+            icon: const Icon(FluentIcons.activate_orders),
+            title: const Text('Orders'),
           ),
           PaneItemSeparator(),
           PaneItem(
-            icon: Icon(FluentIcons.lightning_bolt),
-            title: Text('Flash'),
+            icon: const Icon(FluentIcons.campaign_template),
+            title: const Text('Campaign'),
           ),
           PaneItemSeparator(),
           PaneItem(
-            icon: Icon(FluentIcons.news),
-            title: Text('Newsfeed'),
+            icon: const Icon(FluentIcons.lightning_bolt),
+            title: const Text('Flash'),
+          ),
+          PaneItemSeparator(),
+          PaneItem(
+            icon: const Icon(FluentIcons.news),
+            title: const Text('Newsfeed'),
           ),
         ],
         footerItems: [
           PaneItemSeparator(),
           PaneItem(
-            icon: Icon(FluentIcons.signin),
-            title: Text('LogIn'),
+            icon: const Icon(FluentIcons.signin),
+            title: const Text('LogIn'),
           ),
           PaneItem(
-            icon: Icon(FluentIcons.settings),
-            title: Text('Settings'),
+            icon: const Icon(FluentIcons.settings),
+            title: const Text('Settings'),
           ),
         ],
       ),
@@ -96,15 +111,15 @@ class _NavigationPageState extends State<NavigationPage> {
               EntrancePageTransition(child: child, animation: animation),
           index: index,
           children: [
-            Dash(),
-            Products(),
-            AddProduct(),
-            OrderList(),
-            Campaign(),
-            Flash(),
+            const Dash(),
+            const Products(),
+            const AddProduct(),
+            const OrderList(),
+            const Campaign(),
+            const Flash(),
             Newsfeed(),
-            LoginPage(),
-            Settings(),
+            const LoginPage(),
+            const Settings(),
           ],
         ),
       ),

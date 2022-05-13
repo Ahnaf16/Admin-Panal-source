@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gngm_web/Classes/body_base.dart';
@@ -51,7 +49,7 @@ class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
-      header: PageHeader(
+      header: const PageHeader(
         title: Text('Products'),
       ),
       content: Stack(
@@ -64,10 +62,11 @@ class _ProductsState extends State<Products> {
                 children: [
                   Expanded(
                     flex: 2,
+                    //---------------------search box
                     child: TextBox(
-                      padding: EdgeInsets.all(8),
-                      prefix: Padding(
-                        padding: const EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.all(8),
+                      prefix: const Padding(
+                        padding: EdgeInsets.only(left: 10),
                         child: Icon(FluentIcons.search),
                       ),
                       decoration: BoxDecoration(
@@ -80,8 +79,9 @@ class _ProductsState extends State<Products> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   Expanded(
+                    //---------------------category box
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.grey[10],
@@ -91,30 +91,34 @@ class _ProductsState extends State<Products> {
                           width: 1,
                         ),
                       ),
-                      child: Combobox<String>(
-                        placeholder: const Text('Catagory'),
-                        isExpanded: true,
-                        items: categorys
-                            .map((e) => ComboboxItem<String>(
-                                  value: e,
-                                  child: Text(e),
-                                ))
-                            .toList(),
-                        value: category,
-                        onChanged: (value) {
-                          if (value != null) {
-                            setState(() => category = value);
-                          }
-                        },
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Combobox<String>(
+                          placeholder: const Text('Catagory'),
+                          isExpanded: true,
+                          items: categorys
+                              .map((e) => ComboboxItem<String>(
+                                    value: e,
+                                    child: Text(e),
+                                  ))
+                              .toList(),
+                          value: category,
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() => category = value);
+                            }
+                          },
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                 ],
               ),
-              SizedBox(height: 20),
-              Divider(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
+              const Divider(),
+              const SizedBox(height: 20),
+              //------------------------------------all products
               StaggeredGrid.count(
                 crossAxisCount: 5,
                 mainAxisSpacing: 10,
@@ -124,38 +128,42 @@ class _ProductsState extends State<Products> {
                   (index) => ProductModel(
                     name: 'Product $index',
                     image: //random img genaretor
-                        'https://picsum.photos/200/300?random=${index + 1}',
+                        'https://picsum.photos/id/$index/500/400',
                     price: index * 10,
                   ).productWidget(context),
                 ),
               )
             ],
           ),
+          //---------------------------- scrool to top
           showScrollButton == true
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 20),
                   child: Align(
                     alignment: Alignment.bottomRight,
-                    child: IconButton(
-                      icon: Icon(FluentIcons.chevron_up),
-                      style: ButtonStyle(
-                        padding: ButtonState.all(EdgeInsets.all(15)),
-                        shape: ButtonState.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: IconButton(
+                        icon: const Icon(FluentIcons.chevron_up),
+                        style: ButtonStyle(
+                          padding: ButtonState.all(const EdgeInsets.all(15)),
+                          shape: ButtonState.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
+                          iconSize: ButtonState.all(25),
+                          foregroundColor: ButtonState.all(Colors.white),
+                          backgroundColor: ButtonState.all(Colors.blue),
                         ),
-                        iconSize: ButtonState.all(25),
-                        foregroundColor: ButtonState.all(Colors.white),
-                        backgroundColor: ButtonState.all(Colors.blue),
+                        onPressed: () {
+                          scrollController.animateTo(
+                            0,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          );
+                        },
                       ),
-                      onPressed: () {
-                        scrollController.animateTo(
-                          0,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut,
-                        );
-                      },
                     ),
                   ),
                 )

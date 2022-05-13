@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'cached_net_img.dart';
+
 class OrderDataTable extends StatelessWidget {
   const OrderDataTable({
     Key? key,
@@ -44,8 +46,8 @@ class OrderDataTable extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        data[inx]['img'], //product image
+                      child: CachedNetImg(
+                        url: data[inx]['img'], //product image
                         height: 60,
                         width: 60,
                         fit: BoxFit.cover,

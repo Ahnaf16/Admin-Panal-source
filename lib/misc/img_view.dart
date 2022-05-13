@@ -1,5 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
+import '../Classes/cached_net_img.dart';
+
 class ImgView extends StatelessWidget {
   const ImgView({
     Key? key,
@@ -15,12 +17,15 @@ class ImgView extends StatelessWidget {
       header: PageHeader(
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: IconButton(
-            icon: const Icon(
-              FluentIcons.back_to_window,
-              size: 20,
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: IconButton(
+              icon: const Icon(
+                FluentIcons.clear,
+                size: 20,
+              ),
+              onPressed: () => Navigator.pop(context),
             ),
-            onPressed: () => Navigator.pop(context),
           ),
         ),
         title: const Text('Image Preview'),
@@ -32,11 +37,10 @@ class ImgView extends StatelessWidget {
             onTap: () => Navigator.pop(context),
             child: Hero(
               tag: tag,
-              child: Image.network(
-                url,
+              child: CachedNetImg(
+                url: url,
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                fit: BoxFit.contain,
               ),
             ),
           ),

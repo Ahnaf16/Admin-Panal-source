@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(gngm_web LANGUAGES CXX)
 
-set(BINARY_NAME "gngm_web")
+set(BINARY_NAME "Admin Panal")
 
 cmake_policy(SET CMP0063 NEW)
 

@@ -45,7 +45,10 @@ class LoginPage extends ConsumerWidget {
               header: 'Password',
               obscureText: obscureText,
               suffix: IconButton(
-                icon: const Icon(FluentIcons.view),
+                icon: Icon(
+                  obscureText ? FluentIcons.hide3 : FluentIcons.view,
+                  size: 20,
+                ),
                 onPressed: () {
                   ref.read(obscureTextProvider.state).state = !obscureText;
                 },
@@ -54,14 +57,18 @@ class LoginPage extends ConsumerWidget {
             const SizedBox(
               height: 20,
             ),
-            FilledButton(
-              child: const Text('Log In'),
-              onPressed: () {
-                EasyLoading.showToast(
-                  'Logging In...',
-                  toastPosition: EasyLoadingToastPosition.bottom,
-                );
-              },
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: FilledButton(
+                child: const Text('Log In'),
+                onPressed: () {
+                  EasyLoading.showToast(
+                    'Logging In...',
+                    toastPosition: EasyLoadingToastPosition.bottom,
+                  );
+                },
+                style: FluentTheme.of(context).buttonTheme.filledButtonStyle,
+              ),
             ),
             const SizedBox(
               height: 10,

@@ -1,6 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'dart:developer';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -27,95 +24,103 @@ class OrderDetails extends ConsumerWidget {
           !ref.read(enableEditProvider.state).state;
     }
 
-    return NavigationView(
-      appBar: NavigationAppBar(
-        leading: IconButton(
-          icon: Icon(FluentIcons.back),
-          onPressed: () => Navigator.pop(context),
+    return ScaffoldPage(
+      header: PageHeader(
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: IconButton(
+              icon: const Icon(
+                FluentIcons.back,
+                size: 20,
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
         ),
-        title: PageHeader(
-          title: Text('Order Details'),
-        ),
+        title: const Text('Order Details'),
       ),
-      content: ScaffoldPage(
-        content: SingleChildScrollView(
-          child: Center(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width / 1.1,
-              height: MediaQuery.of(context).size.height,
-              child: Card(
-                borderRadius: BorderRadius.circular(10),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  //------------------------ main colume
-                  child: Column(
-                    children: [
-                      //------------------------ header
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(FluentIcons.calendar),
-                          const SizedBox(width: 10),
-                          Text(
-                            DateFormat('EEE, LLL d. y, h:mm a')
-                                .format(DateTime.now()),
-                            style: FluentTheme.of(context)
-                                .typography
-                                .bodyStrong!
-                                .merge(
-                                  typeTheme.bodyLarge,
-                                ),
-                          ),
+      content: SingleChildScrollView(
+        child: Center(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width / 1.1,
+            height: MediaQuery.of(context).size.height,
+            child: Card(
+              borderRadius: BorderRadius.circular(10),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+                //------------------------ main colume
+                child: Column(
+                  children: [
+                    //------------------------ header
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(FluentIcons.calendar),
+                        const SizedBox(width: 10),
+                        Text(
+                          DateFormat('EEE, LLL d. y, h:mm a')
+                              .format(DateTime.now()),
+                          style: FluentTheme.of(context)
+                              .typography
+                              .bodyStrong!
+                              .merge(
+                                typeTheme.bodyLarge,
+                              ),
+                        ),
 
-                          Spacer(
-                            flex: 2,
-                          ),
-                          // ----------------------------status
+                        const Spacer(
+                          flex: 2,
+                        ),
+                        // ----------------------------status
 
-                          enableEdit
-                              ? Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[10],
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                        color: Colors.grey[100],
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Combobox<String>(
-                                      placeholder: const Text('Change Status'),
-                                      isExpanded: true,
-                                      items: allStatus
-                                          .map((e) => ComboboxItem<String>(
-                                                value: e,
-                                                child: Text(e),
-                                              ))
-                                          .toList(),
-                                      value: status,
-                                      onChanged: (value) {
-                                        ref
-                                            .read(orderStstusChangeerProvider
-                                                .state)
-                                            .state = value;
-                                      },
+                        enableEdit
+                            ? Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[10],
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: Colors.grey[100],
+                                      width: 1,
                                     ),
                                   ),
-                                )
-                              : Chip2(
-                                  text: 'Pending',
-                                  backgroundColor:
-                                      Color.fromARGB(255, 188, 243, 201),
-                                  textcolor: Colors.green.darkest,
+                                  child: Combobox<String>(
+                                    placeholder: const Text('Change Status'),
+                                    isExpanded: true,
+                                    items: allStatus
+                                        .map((e) => ComboboxItem<String>(
+                                              value: e,
+                                              child: Text(e),
+                                            ))
+                                        .toList(),
+                                    value: status,
+                                    onChanged: (value) {
+                                      ref
+                                          .read(
+                                              orderStstusChangeerProvider.state)
+                                          .state = value;
+                                    },
+                                  ),
                                 ),
+                              )
+                            : Chip2(
+                                text: 'Pending',
+                                backgroundColor:
+                                    const Color.fromARGB(255, 188, 243, 201),
+                                textcolor: Colors.green.darkest,
+                              ),
 
-                          SizedBox(width: 10),
+                        const SizedBox(width: 10),
 
-                          //----------------------------edit button
-                          OutlinedButton(
+                        //----------------------------edit button
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: OutlinedButton(
                             child: Text(enableEdit ? 'Cancel' : 'Edit'),
                             onPressed: () {
                               changeEnableEdit();
@@ -124,190 +129,199 @@ class OrderDetails extends ConsumerWidget {
                                 .buttonTheme
                                 .outlinedButtonStyle,
                           ),
-                          SizedBox(width: 10),
-                          //----------------------------save button
-                          enableEdit
-                              ? OutlinedButton(
-                                  child: Text('Save Edits'),
+                        ),
+                        const SizedBox(width: 10),
+                        //----------------------------save button
+                        enableEdit
+                            ? MouseRegion(
+                                cursor: SystemMouseCursors.click,
+                                child: FilledButton(
+                                  child: const Text('Save Edits'),
                                   onPressed: () {
                                     changeEnableEdit();
                                   },
-                                  style: FluentTheme.of(context)
-                                      .buttonTheme
-                                      .outlinedButtonStyle,
-                                )
-                              : SizedBox(),
-                        ],
-                      ),
-                      //-------------------------invoice number
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Invoice: GnG47545726523',
-                            style: FluentTheme.of(context)
-                                .typography
-                                .bodyStrong!
-                                .copyWith(fontSize: 18),
-                          ),
-                          SizedBox(width: 10),
-                          IconButton(
-                            icon: Icon(FluentIcons.copy),
-                            onPressed: () {
-                              Clipboard.setData(
-                                ClipboardData(
-                                  text: 'GnG47545726523',
+                                  style: ButtonStyle(
+                                    padding: ButtonState.all<EdgeInsets>(
+                                      const EdgeInsets.symmetric(
+                                        horizontal: 15,
+                                        vertical: 8,
+                                      ),
+                                    ),
+                                    shape: ButtonState.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ).whenComplete(
-                                () => EasyLoading.showToast(
-                                  'Copied to Clipboard',
-                                  toastPosition:
-                                      EasyLoadingToastPosition.bottom,
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Divider(),
-                      SizedBox(height: 15),
-                      //-------------------------customer info
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CircleAvatar(
-                            foregroundColor: Colors.black,
-                            backgroundColor: Colors.grey[50],
-                            child: Icon(FluentIcons.contact),
-                          ),
-                          SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Customer Info',
-                                style: FluentTheme.of(context)
-                                    .typography
-                                    .bodyLarge,
-                              ),
-                              Text('Ahnaf Sakil'),
-                              Text('ahnafsakil9@gmail.com'),
-                              Text('01xxxxxxxxx'),
-                            ],
-                          ),
-                          //-------------------------order info
-                          Spacer(
-                            flex: 1,
-                          ),
-                          CircleAvatar(
-                            foregroundColor: Colors.black,
-                            backgroundColor: Colors.grey[50],
-                            child: Icon(FluentIcons.delivery_truck),
-                          ),
-
-                          SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Order Info',
-                                style: FluentTheme.of(context)
-                                    .typography
-                                    .bodyLarge,
-                              ),
-                              Text('Payment Method: Cash'),
-                              Text('Status: Picked'),
-                            ],
-                          ),
-                          //-------------------------delivery info
-                          Spacer(
-                            flex: 1,
-                          ),
-                          CircleAvatar(
-                            foregroundColor: Colors.black,
-                            backgroundColor: Colors.grey[50],
-                            child: Icon(FluentIcons.p_b_i_anomalies_marker),
-                          ),
-
-                          SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Deliver To',
-                                style: FluentTheme.of(context)
-                                    .typography
-                                    .bodyLarge,
-                              ),
-                              Text('Region: Dhaka'),
-                              Text('District: Dhaka'),
-                              Text('Address: Mirpur 10'),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: Colors.grey,
-                            width: 1,
-                          ),
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
+                    //-------------------------invoice number
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Invoice: GnG47545726523',
+                          style: FluentTheme.of(context)
+                              .typography
+                              .bodyStrong!
+                              .copyWith(fontSize: 18),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              //-------------------------Data table
-                              OrderDataTable(
-                                rowlength: products.length,
-                                data: products,
+                        const SizedBox(width: 10),
+                        IconButton(
+                          icon: const Icon(FluentIcons.copy),
+                          onPressed: () {
+                            Clipboard.setData(
+                              const ClipboardData(
+                                text: 'GnG47545726523',
                               ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  cashInfo(
-                                    CrossAxisAlignment.start,
-                                    typeTheme,
-                                    'Subtotal :',
-                                    'Delivary charge :',
-                                    'Total :',
-                                    'Padi Ammount :  ',
-                                    'Due :',
-                                    false,
-                                    enableEdit,
-                                  ),
-                                  cashInfo(
-                                    CrossAxisAlignment.end,
-                                    typeTheme,
-                                    '\$ ${products.fold<num>(
-                                      0,
-                                      (a, b) => a + b['total'],
-                                    )}',
-                                    ' \$ 60',
-                                    '\$ ${products.fold<num>(
-                                      60,
-                                      (a, b) => a + b['total'],
-                                    )}',
-                                    '\$ 500',
-                                    '\$ 80',
-                                    true,
-                                    enableEdit,
-                                  ),
-                                ],
+                            ).whenComplete(
+                              () => EasyLoading.showToast(
+                                'Copied to Clipboard',
+                                toastPosition: EasyLoadingToastPosition.bottom,
                               ),
-                            ],
-                          ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    const Divider(),
+                    const SizedBox(height: 15),
+                    //-------------------------customer info
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          foregroundColor: Colors.black,
+                          backgroundColor: Colors.grey[50],
+                          child: const Icon(FluentIcons.contact),
+                        ),
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Customer Info',
+                              style:
+                                  FluentTheme.of(context).typography.bodyLarge,
+                            ),
+                            const Text('Ahnaf Sakil'),
+                            const Text('ahnafsakil9@gmail.com'),
+                            const Text('01xxxxxxxxx'),
+                          ],
+                        ),
+                        //-------------------------order info
+                        const Spacer(
+                          flex: 1,
+                        ),
+                        CircleAvatar(
+                          foregroundColor: Colors.black,
+                          backgroundColor: Colors.grey[50],
+                          child: const Icon(FluentIcons.delivery_truck),
+                        ),
+
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Order Info',
+                              style:
+                                  FluentTheme.of(context).typography.bodyLarge,
+                            ),
+                            const Text('Payment Method: Cash'),
+                            const Text('Status: Picked'),
+                          ],
+                        ),
+                        //-------------------------delivery info
+                        const Spacer(
+                          flex: 1,
+                        ),
+                        CircleAvatar(
+                          foregroundColor: Colors.black,
+                          backgroundColor: Colors.grey[50],
+                          child: const Icon(FluentIcons.p_b_i_anomalies_marker),
+                        ),
+
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Deliver To',
+                              style:
+                                  FluentTheme.of(context).typography.bodyLarge,
+                            ),
+                            const Text('Region: Dhaka'),
+                            const Text('District: Dhaka'),
+                            const Text('Address: Mirpur 10'),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 1,
                         ),
                       ),
-                    ],
-                  ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            //-------------------------Data table
+                            OrderDataTable(
+                              rowlength: products.length,
+                              data: products,
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                cashInfo(
+                                  CrossAxisAlignment.start,
+                                  typeTheme,
+                                  'Subtotal :',
+                                  'Delivary charge :',
+                                  'Total :',
+                                  'Padi Ammount :  ',
+                                  'Due :',
+                                  false,
+                                  enableEdit,
+                                ),
+                                cashInfo(
+                                  CrossAxisAlignment.end,
+                                  typeTheme,
+                                  '\$ ${products.fold<num>(
+                                    0,
+                                    (a, b) => a + b['total'],
+                                  )}',
+                                  ' \$ 60',
+                                  '\$ ${products.fold<num>(
+                                    60,
+                                    (a, b) => a + b['total'],
+                                  )}',
+                                  '\$ 500',
+                                  '\$ 80',
+                                  true,
+                                  enableEdit,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -320,11 +334,11 @@ class OrderDetails extends ConsumerWidget {
   Column cashInfo(
     CrossAxisAlignment crossAxisAlignment,
     Typography typeTheme,
-    String t1,
-    String t2,
-    String t3,
-    String t4,
-    String t5,
+    String subtotle,
+    String delivary,
+    String total,
+    String paid,
+    String due,
     bool isEditable,
     bool enableEdit,
   ) {
@@ -332,38 +346,55 @@ class OrderDetails extends ConsumerWidget {
       crossAxisAlignment: crossAxisAlignment,
       children: [
         Text(
-          t1,
-          style: typeTheme.bodyStrong,
+          subtotle,
+          style: typeTheme.bodyLarge,
         ),
         Text(
-          t2,
-          style: typeTheme.bodyStrong,
+          delivary,
+          style: typeTheme.bodyLarge,
         ),
         Text(
-          t3,
+          total,
           style: typeTheme.bodyLarge!.copyWith(
-            fontWeight: FontWeight.w700,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         isEditable
             ? SizedBox(
                 width: 100,
                 child: TextBox(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp('[0-9]'),
+                    ),
+                  ],
+                  controller: TextEditingController(
+                    text: paid,
+                  ),
                   padding: kTextBoxPadding.copyWith(right: 0),
-                  textAlign: TextAlign.end,
+                  textAlign: enableEdit ? TextAlign.start : TextAlign.end,
                   enabled: enableEdit,
-                  placeholder: t4,
-                  placeholderStyle: typeTheme.bodyStrong,
+                  style: typeTheme.bodyLarge,
+                  decoration: enableEdit
+                      ? BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 1,
+                          ),
+                        )
+                      : null,
                 ),
               )
             : Text(
-                t4,
-                style: typeTheme.bodyStrong,
+                paid,
+                style: typeTheme.bodyLarge,
               ),
         Text(
-          t5,
-          style: typeTheme.bodyStrong,
+          due,
+          style: typeTheme.bodyLarge,
         )
       ],
     );

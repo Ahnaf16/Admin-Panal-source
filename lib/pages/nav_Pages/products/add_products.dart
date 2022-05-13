@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gngm_web/misc/export.dart';
 import 'package:gngm_web/pages/nav_Pages/products/product_preview.dart';
 import 'package:nanoid/nanoid.dart';
+
+import '../../../Classes/cached_net_img.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
@@ -45,44 +46,48 @@ class _AddProductState extends State<AddProduct> {
     return ScaffoldPage(
       header: PageHeader(
         title: const Text('Add Product'),
-        commandBar: FilledButton(
-          child: const Text('Publish Product'),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (_) => ContentDialog(
-                title: Text('Preview'),
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width / 1.3,
-                ),
-                content: ProductPreview(),
-                actions: [
-                  TextButton(
-                    child: const Text('Confirm Update'),
-                    onPressed: () {
-                      EasyLoading.showToast(
-                        'Product Updated',
-                        toastPosition: EasyLoadingToastPosition.bottom,
-                      );
-                      Navigator.pop(context);
-                    },
-                  ),
-                  TextButton(
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
-                        color: Colors.warningPrimaryColor,
+        commandBar: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: FilledButton(
+            child: const Text('Publish Product'),
+            onPressed: () {
+              //-------------------------------publish dialog button
+              showDialog(
+                context: context,
+                builder: (_) => ContentDialog(
+                  title: PageHeader(
+                    leading: Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: IconButton(
+                        icon: const Icon(FluentIcons.back, size: 20),
+                        onPressed: () => Navigator.pop(context),
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    title: const Text('Preview'),
                   ),
-                ],
-              ),
-            );
-          },
-          style: FluentTheme.of(context).buttonTheme.filledButtonStyle,
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width / 1.3,
+                  ),
+                  content: const ProductPreview(),
+                  actions: [
+                    FilledButton(
+                      child: const Text('Confirm Update'),
+                      onPressed: () {
+                        EasyLoading.showToast(
+                          'Product Updated',
+                          toastPosition: EasyLoadingToastPosition.bottom,
+                        );
+                        Navigator.pop(context);
+                      },
+                      style:
+                          FluentTheme.of(context).buttonTheme.filledButtonStyle,
+                    ),
+                  ],
+                ),
+              );
+            },
+            style: FluentTheme.of(context).buttonTheme.filledButtonStyle,
+          ),
         ),
       ),
       content: SingleChildScrollView(
@@ -119,7 +124,7 @@ class _AddProductState extends State<AddProduct> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               TextBox(
                                 header: 'Brand',
                                 decoration: BoxDecoration(
@@ -136,30 +141,33 @@ class _AddProductState extends State<AddProduct> {
                         ),
                       ),
                       //-------------Description
-                      SizedBox(height: 20),
-                      Card(
-                        borderRadius: BorderRadius.circular(10),
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(
-                            minHeight: 200,
-                          ),
-                          child: TextBox(
-                            maxLines: null,
-                            minHeight: 150,
-                            expands: true,
-                            header: 'Description',
-                            decoration: BoxDecoration(
-                              color: Colors.grey[10],
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                color: Colors.grey[100],
-                                width: 1,
+                      const SizedBox(height: 20),
+                      MouseRegion(
+                        cursor: SystemMouseCursors.text,
+                        child: Card(
+                          borderRadius: BorderRadius.circular(10),
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minHeight: 200,
+                            ),
+                            child: TextBox(
+                              maxLines: null,
+                              minHeight: 150,
+                              expands: true,
+                              header: 'Description',
+                              decoration: BoxDecoration(
+                                color: Colors.grey[10],
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  color: Colors.grey[100],
+                                  width: 1,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       //-------------img selection
                       Card(
                         borderRadius: BorderRadius.circular(10),
@@ -169,26 +177,27 @@ class _AddProductState extends State<AddProduct> {
                             children: [
                               //-------------add img button
                               IconButton(
-                                  icon: Icon(FluentIcons.file_image),
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                    padding: ButtonState.all<EdgeInsets>(
-                                      EdgeInsets.all(20),
+                                icon: const Icon(FluentIcons.file_image),
+                                onPressed: () {},
+                                style: ButtonStyle(
+                                  padding: ButtonState.all<EdgeInsets>(
+                                    const EdgeInsets.all(20),
+                                  ),
+                                  shape: ButtonState.all<OutlinedBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                    shape: ButtonState.all<OutlinedBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
+                                  ),
+                                  border: ButtonState.all(
+                                    BorderSide(
+                                      color: Colors.grey[100],
+                                      width: 2,
                                     ),
-                                    border: ButtonState.all(
-                                      BorderSide(
-                                        color: Colors.grey[100],
-                                        width: 2,
-                                      ),
-                                    ),
-                                    iconSize: ButtonState.all(30),
-                                  )),
-                              SizedBox(width: 20),
+                                  ),
+                                  iconSize: ButtonState.all(30),
+                                ),
+                              ),
+                              const SizedBox(width: 20),
                               //-------------img preview
                               Row(
                                 children: List.generate(
@@ -203,25 +212,37 @@ class _AddProductState extends State<AddProduct> {
                                           return MenuFlyout(
                                             items: [
                                               MenuFlyoutItem(
-                                                leading: Icon(FluentIcons.view),
-                                                text: Text('View'),
+                                                leading: const Icon(
+                                                    FluentIcons.view),
+                                                text: const Text('View'),
                                                 onPressed: () {
                                                   flyoutController.close();
-                                                  Navigator.push(
-                                                    context,
-                                                    FluentPageRoute(
-                                                      builder: (_) => ImgView(
-                                                          tag: index.toString(),
-                                                          url:
-                                                              'https://picsum.photos/200/300?random=${index + 1}'),
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (_) =>
+                                                        //-------------------------------img view dialog
+                                                        ContentDialog(
+                                                      constraints:
+                                                          BoxConstraints(
+                                                        maxWidth: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            1.5,
+                                                      ),
+                                                      content: ImgView(
+                                                        tag: index.toString(),
+                                                        url:
+                                                            'https://picsum.photos/id/${index + 2 * 11}/600/300',
+                                                      ),
                                                     ),
                                                   );
                                                 },
                                               ),
                                               MenuFlyoutItem(
-                                                leading:
-                                                    Icon(FluentIcons.remove),
-                                                text: Text('Remove'),
+                                                leading: const Icon(
+                                                    FluentIcons.remove),
+                                                text: const Text('Remove'),
                                                 onPressed: () {
                                                   flyoutController.close();
                                                 },
@@ -231,9 +252,9 @@ class _AddProductState extends State<AddProduct> {
                                         },
                                         child: Hero(
                                           tag: 'image$index',
-                                          child: Image.network(
-                                            //rendom image generator
-                                            'https://picsum.photos/200/300?random=${index + 1}',
+                                          child: CachedNetImg(
+                                            url:
+                                                'https://picsum.photos/id/${index + 2 * 11}/600/300',
                                             height: 100,
                                             width: 100,
                                             fit: BoxFit.cover,
@@ -251,7 +272,7 @@ class _AddProductState extends State<AddProduct> {
                     ],
                   ),
                 ),
-                //-------------right side
+                //--------------------------right side
                 const SizedBox(width: 20),
                 Expanded(
                   child: Card(
@@ -274,6 +295,12 @@ class _AddProductState extends State<AddProduct> {
         //-------------price
         TextBox(
           header: 'Price',
+          inputFormatters: [
+            FilteringTextInputFormatter(
+              RegExp(r'[0-9]'),
+              allow: true,
+            )
+          ],
           decoration: BoxDecoration(
             color: Colors.grey[10],
             borderRadius: BorderRadius.circular(5),
@@ -283,29 +310,38 @@ class _AddProductState extends State<AddProduct> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
           child: Divider(),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Default Discount'),
+            const Text('Default Discount'),
             //----------------------discount switch
-            ToggleSwitch(
-              checked: discountSwitch,
-              onChanged: (value) {
-                setState(() {
-                  discountSwitch = !discountSwitch;
-                });
-              },
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: ToggleSwitch(
+                checked: discountSwitch,
+                onChanged: (value) {
+                  setState(() {
+                    discountSwitch = !discountSwitch;
+                  });
+                },
+              ),
             ),
           ],
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         //-----------------duscount box
         discountSwitch
             ? TextBox(
+                inputFormatters: [
+                  FilteringTextInputFormatter(
+                    RegExp(r'[0-9]'),
+                    allow: true,
+                  )
+                ],
                 enabled: discountSwitch,
                 header: 'Discount Price',
                 decoration: BoxDecoration(
@@ -317,9 +353,9 @@ class _AddProductState extends State<AddProduct> {
                   ),
                 ),
               )
-            : SizedBox(),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+            : const SizedBox(),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
           child: Divider(),
         ),
         //----------------categorys
@@ -332,16 +368,19 @@ class _AddProductState extends State<AddProduct> {
             ),
             //-----------------clear categorys button
             cIndex == -1
-                ? Text('')
-                : IconButton(
-                    icon: Icon(FluentIcons.cancel),
-                    onPressed: () {
-                      cIndex == -1
-                          ? null
-                          : setState(() {
-                              cIndex = -1;
-                            });
-                    },
+                ? const Text('')
+                : MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: IconButton(
+                      icon: const Icon(FluentIcons.cancel),
+                      onPressed: () {
+                        cIndex == -1
+                            ? null
+                            : setState(() {
+                                cIndex = -1;
+                              });
+                      },
+                    ),
                   )
           ],
         ),
@@ -353,17 +392,20 @@ class _AddProductState extends State<AddProduct> {
             (index) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: RadioButton(
-                  checked: cIndex == index,
-                  onChanged: (value) => setState(() => cIndex = index),
-                  content: Text(categorys[index]),
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: RadioButton(
+                    checked: cIndex == index,
+                    onChanged: (value) => setState(() => cIndex = index),
+                    content: Text(categorys[index]),
+                  ),
                 ),
               );
             },
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
           child: Divider(),
         ),
         //-----------------product id
@@ -374,6 +416,9 @@ class _AddProductState extends State<AddProduct> {
               child: TextBox(
                 controller: pIDController,
                 readOnly: true,
+                focusNode: FocusNode(
+                  canRequestFocus: false,
+                ),
                 header: 'Product ID',
                 decoration: BoxDecoration(
                   color: Colors.grey[10],
@@ -386,12 +431,15 @@ class _AddProductState extends State<AddProduct> {
               ),
             ),
             //-----------------generate id button
-            SizedBox(width: 10),
-            OutlinedButton(
-              child: Text('Generate ID'),
-              onPressed: () {
-                pIDController.text = nanoid();
-              },
+            const SizedBox(width: 10),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: OutlinedButton(
+                child: const Text('Generate ID'),
+                onPressed: () {
+                  pIDController.text = nanoid();
+                },
+              ),
             )
           ],
         ),

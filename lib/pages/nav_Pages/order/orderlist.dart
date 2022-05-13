@@ -1,11 +1,7 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:developer' as d;
 import 'dart:math';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gngm_web/misc/export.dart';
-
-import '../../../Classes/body_base.dart';
 
 class OrderList extends StatefulWidget {
   const OrderList({Key? key}) : super(key: key);
@@ -61,7 +57,7 @@ class _OrderListState extends State<OrderList> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
-      header: PageHeader(
+      header: const PageHeader(
         title: Text('Orders'),
       ),
       content: Stack(
@@ -78,9 +74,9 @@ class _OrderListState extends State<OrderList> {
                   Expanded(
                     flex: 2,
                     child: TextBox(
-                      padding: EdgeInsets.all(8),
-                      prefix: Padding(
-                        padding: const EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.all(8),
+                      prefix: const Padding(
+                        padding: EdgeInsets.only(left: 10),
                         child: Icon(FluentIcons.search),
                       ),
                       decoration: BoxDecoration(
@@ -93,7 +89,7 @@ class _OrderListState extends State<OrderList> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   //-----------------status
                   Expanded(
                     child: Container(
@@ -105,26 +101,29 @@ class _OrderListState extends State<OrderList> {
                           width: 1,
                         ),
                       ),
-                      child: Combobox<String>(
-                        placeholder: const Text('Status'),
-                        isExpanded: true,
-                        items: allStatus
-                            .map((e) => ComboboxItem<String>(
-                                  value: e,
-                                  child: Text(e),
-                                ))
-                            .toList(),
-                        value: status,
-                        onChanged: (value) {
-                          status = value;
-                        },
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Combobox<String>(
+                          placeholder: const Text('Status'),
+                          isExpanded: true,
+                          items: allStatus
+                              .map((e) => ComboboxItem<String>(
+                                    value: e,
+                                    child: Text(e),
+                                  ))
+                              .toList(),
+                          value: status,
+                          onChanged: (value) {
+                            status = value;
+                          },
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               //-----------------pay method
               PillButtonBar(
                 selected: payIndex,
@@ -139,9 +138,9 @@ class _OrderListState extends State<OrderList> {
                     )
                     .toList(),
               ),
-              SizedBox(height: 20),
-              Divider(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
+              const Divider(),
+              const SizedBox(height: 20),
               //-----------------order list row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -156,16 +155,16 @@ class _OrderListState extends State<OrderList> {
                   Text('Action'),
                 ],
               ),
-              SizedBox(height: 10),
-              Divider(),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
+              const Divider(),
+              const SizedBox(height: 10),
               //-----------------order list
               ListView.separated(
                 shrinkWrap: true,
                 itemCount: 20,
                 separatorBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10),
+                  return const Padding(
+                    padding: EdgeInsets.all(10),
                     child: Divider(),
                   );
                 },
@@ -176,35 +175,39 @@ class _OrderListState extends State<OrderList> {
                       //-----------------id
                       Text('${Random().nextInt(10000)}'),
                       //-----------------name
-                      Text(
+                      const Text(
                         'Ahnaf Sakil',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       //-----------------contact
-                      Text('ahnafsakil9@gmail.com'),
+                      const Text('ahnafsakil9@gmail.com'),
                       //-----------------total
                       Text('\$ ${Random().nextInt(10000)}'),
                       //-----------------status
                       Chip2(
                         text: allStatus[Random().nextInt(allStatus.length)],
-                        backgroundColor: Color.fromARGB(255, 188, 243, 201),
+                        backgroundColor:
+                            const Color.fromARGB(255, 188, 243, 201),
                         textcolor: Colors.green.darkest,
                       ),
                       //-----------------date
-                      Text('12.04.22'),
+                      const Text('12.04.22'),
                       //-----------------action
-                      IconButton(
-                        icon: Icon(FluentIcons.view),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            FluentPageRoute(
-                              builder: (context) => OrderDetails(),
-                            ),
-                          );
-                        },
+                      MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: IconButton(
+                          icon: const Icon(FluentIcons.view),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              FluentPageRoute(
+                                builder: (context) => OrderDetails(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   );
@@ -218,27 +221,34 @@ class _OrderListState extends State<OrderList> {
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 20),
                   child: Align(
                     alignment: Alignment.bottomRight,
-                    child: IconButton(
-                      icon: Icon(FluentIcons.chevron_up),
-                      style: ButtonStyle(
-                        padding: ButtonState.all(EdgeInsets.all(15)),
-                        shape: ButtonState.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: IconButton(
+                        icon: const Icon(FluentIcons.chevron_up),
+                        style: ButtonStyle(
+                          padding: ButtonState.all(const EdgeInsets.all(15)),
+                          shape: ButtonState.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          iconSize: ButtonState.all(25),
+                          foregroundColor: ButtonState.all(Colors.white),
+                          backgroundColor: ButtonState.resolveWith(
+                            (states) => states.isHovering
+                                ? Colors.blue.light
+                                : Colors.blue,
                           ),
                         ),
-                        iconSize: ButtonState.all(25),
-                        foregroundColor: ButtonState.all(Colors.white),
-                        backgroundColor: ButtonState.all(Colors.blue),
+                        onPressed: () {
+                          scrollController.animateTo(
+                            0,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          );
+                          d.log('scroll to top');
+                        },
                       ),
-                      onPressed: () {
-                        scrollController.animateTo(
-                          0,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut,
-                        );
-                        d.log('scroll to top');
-                      },
                     ),
                   ),
                 )

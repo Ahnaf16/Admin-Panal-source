@@ -1,4 +1,4 @@
-package com.example.gngm_web
+package com.admin.app
 
 import io.flutter.embedding.android.FlutterActivity
 

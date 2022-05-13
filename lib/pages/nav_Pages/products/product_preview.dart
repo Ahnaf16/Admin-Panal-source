@@ -1,9 +1,5 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:intl/intl.dart';
-
-import '../../../Classes/body_base.dart';
 import '../../../misc/export.dart';
 
 class ProductPreview extends StatelessWidget {
@@ -16,9 +12,9 @@ class ProductPreview extends StatelessWidget {
       content: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: BaseBody(
-          bottomPadding: 0,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            //---------------------------Product images
             Row(
               children: List.generate(
                 3,
@@ -40,8 +36,8 @@ class ProductPreview extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 15),
               child: Divider(),
             ),
             //------------------name
@@ -50,46 +46,48 @@ class ProductPreview extends StatelessWidget {
               style: typetheme.title,
             ),
             DualText(
-              typetheme1: typetheme.bodyLarge,
+              typetheme1:
+                  typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
               typetheme2: typetheme.bodyLarge,
               text1: 'Product ID : ',
               text2: '38odzpssRIxEi8XRtxCXg',
             ),
             //------------------price
             DualText(
-              typetheme1: typetheme.bodyLarge,
-              typetheme2:
+              typetheme1:
                   typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+              typetheme2: typetheme.bodyLarge,
               text1: 'Price : \$ ',
               text2: NumberFormat().format(76000),
             ),
             //------------------Discount
             DualText(
-              typetheme1: typetheme.bodyLarge,
-              typetheme2:
+              typetheme1:
                   typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+              typetheme2: typetheme.bodyLarge,
               text1: 'Discount Price : \$ ',
               text2: NumberFormat().format(75000),
             ),
             //------------------brand
             DualText(
-              typetheme1: typetheme.bodyLarge,
-              typetheme2:
+              typetheme1:
                   typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
-              text1: 'Brand ',
+              typetheme2: typetheme.bodyLarge,
+              text1: 'Brand : ',
               text2: 'Apple',
             ),
+            //------------------category
             DualText(
-              typetheme1: typetheme.bodyLarge,
-              typetheme2:
+              typetheme1:
                   typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
-              text1: 'Category ',
+              typetheme2: typetheme.bodyLarge,
+              text1: 'Category : ',
               text2: 'Phone',
             ),
             //------------------description
             Text(
               'Description :',
-              style: typetheme.bodyLarge!,
+              style: typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
             ),
             Text(
               r'''
@@ -99,6 +97,7 @@ and iPhone 13 Pro. The mobile comes with 5G connectivity support and is
 available at a starting price of Rs 1,29,900 in Graphite, Gold, Silver,
 Sierra Blue color variants.
 ''',
+              style: typetheme.bodyLarge,
             ),
           ],
         ),

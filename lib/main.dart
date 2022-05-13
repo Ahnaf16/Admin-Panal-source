@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,8 +5,8 @@ import 'package:gngm_web/pages/navigation.dart';
 
 void main() {
   runApp(
-    ProviderScope(
-      child: const MyApp(),
+    const ProviderScope(
+      child: MyApp(),
     ),
   );
   configLoading();
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return FluentApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Admin Panal',
       themeMode: ThemeMode.light,
       theme: Themes.light,
       builder: EasyLoading.init(),
@@ -64,7 +62,7 @@ class Themes {
       ),
       filledButtonStyle: ButtonStyle(
         padding: ButtonState.all<EdgeInsets>(
-          EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         ),
         shape: ButtonState.all<OutlinedBorder>(
           RoundedRectangleBorder(
@@ -75,10 +73,12 @@ class Themes {
     ),
     pillButtonBarTheme: PillButtonBarThemeData(
       backgroundColor: Colors.transparent,
-      selectedColor: ButtonState.all(Colors.blue),
-      selectedTextStyle: TextStyle(color: Colors.white),
+      selectedColor: ButtonState.resolveWith(
+        (states) => states.isHovering ? Colors.blue : Colors.red,
+      ),
+      selectedTextStyle: const TextStyle(color: Colors.white),
       unselectedColor: ButtonState.all(Colors.grey[50]),
-      unselectedTextStyle: TextStyle(color: Colors.black),
+      unselectedTextStyle: const TextStyle(color: Colors.black),
     ),
     chipTheme: ChipThemeData(
       decoration: ButtonState.all(
@@ -104,7 +104,7 @@ class Themes {
     ),
     buttonTheme: ButtonThemeData(
       outlinedButtonStyle: ButtonStyle(
-        shape: ButtonState.all<OutlinedBorder>(
+        shape: ButtonState.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -118,7 +118,7 @@ class Themes {
       ),
       filledButtonStyle: ButtonStyle(
         padding: ButtonState.all<EdgeInsets>(
-          EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         ),
         shape: ButtonState.all<OutlinedBorder>(
           RoundedRectangleBorder(
@@ -129,10 +129,14 @@ class Themes {
     ),
     pillButtonBarTheme: PillButtonBarThemeData(
       backgroundColor: Colors.transparent,
-      selectedColor: ButtonState.all(Colors.blue),
-      selectedTextStyle: TextStyle(color: Colors.white),
-      unselectedColor: ButtonState.all(Colors.grey[50]),
-      unselectedTextStyle: TextStyle(color: Colors.black),
+      selectedColor: ButtonState.resolveWith(
+        (states) => states.isHovering ? Colors.blue.light : Colors.blue,
+      ),
+      selectedTextStyle: const TextStyle(color: Colors.white),
+      unselectedColor: ButtonState.resolveWith(
+        (states) => states.isHovering ? Colors.grey[40] : Colors.grey[50],
+      ),
+      unselectedTextStyle: const TextStyle(color: Colors.black),
     ),
     chipTheme: ChipThemeData(
       decoration: ButtonState.all(

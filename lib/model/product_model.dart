@@ -1,6 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:gngm_web/pages/nav_Pages/products/edit_product.dart';
+
+import '../Classes/cached_net_img.dart';
+import '../misc/export.dart';
 
 class ProductModel {
   final String name;
@@ -25,15 +27,17 @@ class ProductModel {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
+              //-------------------image
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  image,
+                child: CachedNetImg(
+                  url: image,
                   // width: 100,
                 ),
               ),
             ),
             const SizedBox(height: 10),
+            //-------------------name
             Text(
               name,
               style: const TextStyle(
@@ -42,6 +46,7 @@ class ProductModel {
               ),
             ),
             const SizedBox(height: 10),
+            //-------------------price
             Text(
               '\$$price',
               style: const TextStyle(
@@ -50,81 +55,95 @@ class ProductModel {
               ),
             ),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  icon: const Icon(FluentIcons.edit_solid12),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      FluentPageRoute(
-                        builder: (_) => const EditProduct(),
-                      ),
-                    );
-                  },
-                  style: ButtonStyle(
-                    iconSize: ButtonState.all(20),
-                    shape: ButtonState.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    foregroundColor: ButtonState.all(Colors.grey[140]),
-                    border:
-                        ButtonState.all(BorderSide(color: Colors.grey[140])),
-                  ),
-                ),
-                IconButton(
-                  style: ButtonStyle(
-                    iconSize: ButtonState.all(20),
-                    shape: ButtonState.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    foregroundColor:
-                        ButtonState.all(Colors.warningPrimaryColor),
-                    border: ButtonState.all(
-                        const BorderSide(color: Colors.warningPrimaryColor)),
-                  ),
-                  icon: const Icon(FluentIcons.delete),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => ContentDialog(
-                        title: const Text('Delete Product'),
-                        content: const Text(
-                            'Are you sure you want to delete this product?'),
-                        actions: [
-                          TextButton(
-                            style: ButtonStyle(
-                              foregroundColor:
-                                  ButtonState.all(Colors.warningPrimaryColor),
+            //-------------------actions
+            Align(
+              alignment: Alignment.bottomRight,
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: Flyout(
+                  openMode: FlyoutOpenMode.press,
+                  content: (context) => MenuFlyout(
+                    items: [
+                      //-------------------Edit
+                      MenuFlyoutItem(
+                        leading: const Icon(FluentIcons.edit),
+                        text: const Text('Edit'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            FluentPageRoute(
+                              builder: (_) => const EditProduct(),
                             ),
-                            child: const Text('Delete'),
-                            onPressed: () {
-                              EasyLoading.showToast(
-                                'Product Deleted',
-                                toastPosition: EasyLoadingToastPosition.bottom,
-                              );
-
-                              Navigator.pop(context);
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('Cancel'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
+                          );
+                        },
                       ),
-                    );
-                  },
+                      //-------------------delete
+                      MenuFlyoutItem(
+                        leading: const Icon(
+                          FluentIcons.delete,
+                          color: Colors.warningPrimaryColor,
+                        ),
+                        text: const Text(
+                          'Remove',
+                          style: TextStyle(
+                            color: Colors.warningPrimaryColor,
+                          ),
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => ContentDialog(
+                              title: const Text('Delete Product'),
+                              content: const Text(
+                                  'Are you sure you want to delete this product?'),
+                              actions: [
+                                MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: TextButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: ButtonState.resolveWith(
+                                        (states) => states.isHovering
+                                            ? Colors.warningPrimaryColor
+                                            : Colors.transparent,
+                                      ),
+                                      foregroundColor: ButtonState.resolveWith(
+                                        (states) => states.isHovering
+                                            ? Colors.white
+                                            : Colors.warningPrimaryColor,
+                                      ),
+                                    ),
+                                    child: const Text('Delete'),
+                                    onPressed: () {
+                                      EasyLoading.showToast(
+                                        'Product Deleted',
+                                        toastPosition:
+                                            EasyLoadingToastPosition.bottom,
+                                      );
+
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                                MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: TextButton(
+                                    child: const Text('Cancel'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  child: const Icon(FluentIcons.more),
                 ),
-              ],
-            )
+              ),
+            ),
           ],
         ),
       ),

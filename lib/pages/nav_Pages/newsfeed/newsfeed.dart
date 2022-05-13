@@ -1,7 +1,7 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gngm_web/Classes/body_base.dart';
+
+import '../../../Classes/cached_net_img.dart';
 
 class Newsfeed extends StatelessWidget {
   Newsfeed({Key? key}) : super(key: key);
@@ -12,26 +12,29 @@ class Newsfeed extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScaffoldPage(
       header: PageHeader(
-        title: Text('Newsfeed'),
+        title: const Text('Newsfeed'),
         commandBar: Row(
           children: [
             //------------------add button
-            OutlinedButton(
-              child: Row(
-                children: const [
-                  Icon(FluentIcons.add),
-                  SizedBox(width: 10),
-                  Text('Add Newsfeed'),
-                ],
-              ),
-              onPressed: () {},
-            ),
-            SizedBox(width: 10),
+            // OutlinedButton(
+            //   child: Row(
+            //     children: const [
+            //       Icon(FluentIcons.add),
+            //       SizedBox(width: 10),
+            //       Text('Add Newsfeed'),
+            //     ],
+            //   ),
+            //   onPressed: () {},
+            // ),
+            // const SizedBox(width: 10),
             //------------------publish button
-            FilledButton(
-              child: Text('Publish'),
-              onPressed: () {},
-              style: FluentTheme.of(context).buttonTheme.filledButtonStyle,
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: FilledButton(
+                child: const Text('Publish'),
+                onPressed: () {},
+                style: FluentTheme.of(context).buttonTheme.filledButtonStyle,
+              ),
             ),
           ],
         ),
@@ -48,11 +51,11 @@ class Newsfeed extends StatelessWidget {
                 child: MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: IconButton(
-                    icon: Icon(FluentIcons.file_image),
+                    icon: const Icon(FluentIcons.file_image),
                     onPressed: () {},
                     style: ButtonStyle(
                       padding: ButtonState.all<EdgeInsets>(
-                        EdgeInsets.all(20),
+                        const EdgeInsets.all(20),
                       ),
                       shape: ButtonState.all<OutlinedBorder>(
                         RoundedRectangleBorder(
@@ -82,24 +85,24 @@ class Newsfeed extends StatelessWidget {
                     return MenuFlyout(
                       items: [
                         MenuFlyoutItem(
-                          text: Text('View'),
+                          text: const Text('View'),
                           onPressed: () {},
                         ),
                         MenuFlyoutItem(
-                          text: Text('Remove'),
+                          text: const Text('Remove'),
                           onPressed: () {},
                         ),
                       ],
                     );
                   },
-                  child: Image.network(
-                    'https://picsum.photos/250?image=9',
+                  child: const CachedNetImg(
+                    url: 'https://picsum.photos/id/112/500/200',
                   ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           //------------------newsfeed
           TextBox(
             decoration: BoxDecoration(
@@ -114,7 +117,7 @@ class Newsfeed extends StatelessWidget {
             minHeight: 150,
             expands: true,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ],
       ),
     );
