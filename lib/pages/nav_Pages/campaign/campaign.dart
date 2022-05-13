@@ -1,8 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gngm_web/Classes/body_base.dart';
 import 'package:gngm_web/misc/export.dart';
@@ -50,14 +47,12 @@ class _CampaignState extends State<Campaign> {
               height: 100,
               child: Card(
                 //random color generator,
-                backgroundColor: Color.fromARGB(
-                  255,
-                  Random().nextInt(255),
-                  Random().nextInt(255),
-                  Random().nextInt(255),
-                ),
+
                 child: Center(
-                  child: Text('$index'),
+                  //random image generator,
+                  child: Image.network(
+                    'https://picsum.photos/id/$index/100/100',
+                  ),
                 ),
               ),
             );
