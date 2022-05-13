@@ -34,6 +34,13 @@ class _NavigationPageState extends State<NavigationPage> {
             index = newIndex;
           });
         },
+        header: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: FlutterLogo(
+            style: FlutterLogoStyle.horizontal,
+            size: 100,
+          ),
+        ),
         displayMode: PaneDisplayMode.auto,
         indicator: StickyNavigationIndicator(),
         items: [

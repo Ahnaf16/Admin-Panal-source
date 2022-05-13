@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:developer';
 
 import 'package:fluent_ui/fluent_ui.dart';
@@ -44,14 +42,14 @@ class _AddCampaignState extends State<AddCampaign> {
     return ScaffoldPage(
       header: PageHeader(
         commandBar: FilledButton(
-          child: Text('Publish'),
+          child: const Text('Publish'),
           onPressed: () {},
           style: FluentTheme.of(context).buttonTheme.filledButtonStyle,
         ),
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: IconButton(
-            icon: Icon(
+            icon: const Icon(
               FluentIcons.back,
               size: 20,
             ),
@@ -60,7 +58,7 @@ class _AddCampaignState extends State<AddCampaign> {
             },
           ),
         ),
-        title: Text('Add Campaign'),
+        title: const Text('Add Campaign'),
       ),
       content: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -76,8 +74,8 @@ class _AddCampaignState extends State<AddCampaign> {
                   controller: searchcontroller,
                   onChanged: (value) => setState(() {}),
                   header: 'Search',
-                  prefix: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                  prefix: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Icon(FluentIcons.search),
                   ),
                   decoration: BoxDecoration(
@@ -87,7 +85,7 @@ class _AddCampaignState extends State<AddCampaign> {
                         width: 1,
                       )),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 ListView(
@@ -137,7 +135,7 @@ class _AddCampaignState extends State<AddCampaign> {
                 )
               ],
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child: BaseBody(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -148,11 +146,11 @@ class _AddCampaignState extends State<AddCampaign> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
-                          icon: Icon(FluentIcons.file_image),
+                          icon: const Icon(FluentIcons.file_image),
                           onPressed: () {},
                           style: ButtonStyle(
                             padding: ButtonState.all<EdgeInsets>(
-                              EdgeInsets.all(15),
+                              const EdgeInsets.all(15),
                             ),
                             shape: ButtonState.all<OutlinedBorder>(
                               RoundedRectangleBorder(
@@ -177,8 +175,8 @@ class _AddCampaignState extends State<AddCampaign> {
                               return MenuFlyout(
                                 items: [
                                   MenuFlyoutItem(
-                                    leading: Icon(FluentIcons.view),
-                                    text: Text('View'),
+                                    leading: const Icon(FluentIcons.view),
+                                    text: const Text('View'),
                                     onPressed: () {
                                       flyoutController.close();
                                       showDialog(
@@ -200,8 +198,8 @@ class _AddCampaignState extends State<AddCampaign> {
                                     },
                                   ),
                                   MenuFlyoutItem(
-                                    leading: Icon(FluentIcons.remove),
-                                    text: Text('Remove'),
+                                    leading: const Icon(FluentIcons.remove),
+                                    text: const Text('Remove'),
                                     onPressed: () {
                                       flyoutController.close();
                                     },
@@ -224,7 +222,7 @@ class _AddCampaignState extends State<AddCampaign> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextBox(
                     header: 'Title',
                     decoration: BoxDecoration(
@@ -234,14 +232,14 @@ class _AddCampaignState extends State<AddCampaign> {
                           width: 1,
                         )),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     'Selected Proucts',
                     style: FluentTheme.of(context).typography.title,
                   ),
-                  SizedBox(height: 20),
-                  Divider(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
+                  const Divider(),
+                  const SizedBox(height: 20),
                   ListView.builder(
                     controller: ScrollController(),
                     itemCount: selectedNames.length,
