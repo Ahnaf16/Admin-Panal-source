@@ -39,6 +39,10 @@ dependencies:
   cached_network_image: ^3.2.0
   flutter_native_splash: ^2.0.4
   material_design_icons_flutter: ^5.0.6595
+  firebase_core: ^1.17.1
+  firebase_auth: ^3.3.19
+  cloud_firestore: ^3.1.17
+  firebase_storage: ^10.2.17
   
   
 

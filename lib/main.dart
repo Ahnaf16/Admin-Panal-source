@@ -1,9 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gngm_web/pages/navigation.dart';
+import 'package:gngm_web/firebase_options.dart';
+import 'app/nav_pane.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -42,6 +48,7 @@ void configLoading() {
 
 class Themes {
   static ThemeData dark = ThemeData(
+    brightness: Brightness.dark,
     scaffoldBackgroundColor: Colors.grey[170],
     accentColor: Colors.blue,
     cardColor: Colors.grey[150],
