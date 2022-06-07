@@ -17,7 +17,7 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-int index = 1;
+int index = 2;
 
 class _NavigationPageState extends State<NavigationPage> {
   @override

@@ -16,7 +16,7 @@ class ProductModel {
 
   productWidget(BuildContext context) {
     return Card(
-      backgroundColor: Colors.grey[30],
+      // backgroundColor: Colors.grey[30],
       elevation: 3,
       borderRadius: BorderRadius.circular(10),
       child: Padding(
@@ -139,7 +139,21 @@ class ProductModel {
                       ),
                     ],
                   ),
-                  child: const Icon(FluentIcons.more),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 5,
+                        // vertical: 3,
+                      ),
+                      child: Icon(FluentIcons.more),
+                    ),
+                  ),
                 ),
               ),
             ),

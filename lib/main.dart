@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'Admin Panal',
       themeMode: ThemeMode.light,
       theme: Themes.light,
+      darkTheme: Themes.dark,
       builder: EasyLoading.init(),
       home: const NavigationPage(),
     );
@@ -47,57 +48,8 @@ void configLoading() {
 }
 
 class Themes {
-  static ThemeData dark = ThemeData(
-    brightness: Brightness.dark,
-    scaffoldBackgroundColor: Colors.grey[170],
-    accentColor: Colors.blue,
-    cardColor: Colors.grey[150],
-    visualDensity: VisualDensity.adaptivePlatformDensity,
-    buttonTheme: ButtonThemeData(
-      outlinedButtonStyle: ButtonStyle(
-        shape: ButtonState.all<OutlinedBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        border: ButtonState.all(
-          BorderSide(
-            color: Colors.grey[100],
-            width: 2,
-          ),
-        ),
-      ),
-      filledButtonStyle: ButtonStyle(
-        padding: ButtonState.all<EdgeInsets>(
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-        ),
-        shape: ButtonState.all<OutlinedBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-      ),
-    ),
-    pillButtonBarTheme: PillButtonBarThemeData(
-      backgroundColor: Colors.transparent,
-      selectedColor: ButtonState.resolveWith(
-        (states) => states.isHovering ? Colors.blue : Colors.red,
-      ),
-      selectedTextStyle: const TextStyle(color: Colors.white),
-      unselectedColor: ButtonState.all(Colors.grey[50]),
-      unselectedTextStyle: const TextStyle(color: Colors.black),
-    ),
-    chipTheme: ChipThemeData(
-      decoration: ButtonState.all(
-        BoxDecoration(
-          color: Colors.grey[40],
-          borderRadius: BorderRadius.circular(50),
-        ),
-      ),
-    ),
-  );
-
   static ThemeData light = ThemeData(
+    brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.grey[30],
     accentColor: Colors.blue,
     cardColor: Colors.grey[10],
@@ -143,6 +95,56 @@ class Themes {
       unselectedColor: ButtonState.resolveWith(
         (states) => states.isHovering ? Colors.grey[40] : Colors.grey[50],
       ),
+      unselectedTextStyle: const TextStyle(color: Colors.black),
+    ),
+    chipTheme: ChipThemeData(
+      decoration: ButtonState.all(
+        BoxDecoration(
+          color: Colors.grey[40],
+          borderRadius: BorderRadius.circular(50),
+        ),
+      ),
+    ),
+  );
+
+  static ThemeData dark = ThemeData(
+    brightness: Brightness.dark,
+    scaffoldBackgroundColor: Colors.grey[190],
+    accentColor: Colors.blue,
+    cardColor: Colors.grey[160],
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+    buttonTheme: ButtonThemeData(
+      outlinedButtonStyle: ButtonStyle(
+        shape: ButtonState.all<OutlinedBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        border: ButtonState.all(
+          BorderSide(
+            color: Colors.grey[100],
+            width: 2,
+          ),
+        ),
+      ),
+      filledButtonStyle: ButtonStyle(
+        padding: ButtonState.all<EdgeInsets>(
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+        ),
+        shape: ButtonState.all<OutlinedBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+    ),
+    pillButtonBarTheme: PillButtonBarThemeData(
+      backgroundColor: Colors.transparent,
+      selectedColor: ButtonState.resolveWith(
+        (states) => states.isHovering ? Colors.blue : Colors.red,
+      ),
+      selectedTextStyle: const TextStyle(color: Colors.white),
+      unselectedColor: ButtonState.all(Colors.grey[50]),
       unselectedTextStyle: const TextStyle(color: Colors.black),
     ),
     chipTheme: ChipThemeData(

@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gngm_web/app/products/upload_model.dart';
 import 'package:gngm_web/app/products/product_preview.dart';
 import 'package:nanoid/nanoid.dart';
 import '../../../services/provider.dart';
@@ -79,7 +80,19 @@ class _EditProductState extends State<EditProduct> {
                   constraints: BoxConstraints(
                     maxWidth: MediaQuery.of(context).size.width / 1.3,
                   ),
-                  content: const ProductPreview(),
+                  content: ProductPreview(
+                    model: const ProductUploadModel(
+                      pID: '',
+                      name: '',
+                      brand: '',
+                      description: '',
+                      price: 111,
+                      discountPrice: 100,
+                      category: '',
+                      images: [],
+                      haveDiscount: false,
+                    ),
+                  ),
                   actions: [
                     MouseRegion(
                       cursor: SystemMouseCursors.click,

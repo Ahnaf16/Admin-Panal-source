@@ -1,37 +1,92 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gngm_web/app/products/upload_model.dart';
 import 'package:intl/intl.dart';
-
+import '../../services/database.dart';
 import '../../widgets/widget_export.dart';
 
 class ProductPreview extends StatelessWidget {
-  const ProductPreview({Key? key}) : super(key: key);
+  ProductPreview({
+    Key? key,
+    required this.model,
+  }) : super(key: key);
+
+  final ProductUploadModel model;
+
+  final List<String> imgUrls = [];
+
+  final fireProvider = FirestoreProvider(firestore: FirebaseFirestore.instance);
+  final fireStorage = StorageProvider(storage: FirebaseStorage.instance);
 
   @override
   Widget build(BuildContext context) {
     final typetheme = FluentTheme.of(context).typography;
     return ScaffoldPage(
+      header: PageHeader(
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: IconButton(
+            icon: const Icon(FluentIcons.back, size: 20),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        commandBar: Expanded(
+          child: CommandBarCard(
+            child: CommandBar(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              primaryItems: [
+                CommandBarButton(
+                  onPressed: () async {
+                    await fireStorage
+                        .uploadImage(
+                          path: 'itemList',
+                          fileName: model.name,
+                          imgs: model.images,
+                        )
+                        .then((urls) => imgUrls.addAll(urls));
+
+                    await fireProvider.addData(
+                      path: 'itemsList',
+                      fromModel: model,
+                      imgUrls: imgUrls,
+                    );
+                  },
+                  icon: const Icon(FluentIcons.upload),
+                  label: const Text('Publish'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       content: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: BaseBody(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //---------------------------Product images
-            Row(
+            Wrap(
               children: List.generate(
-                3,
+                model.images.length,
                 (index) => Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Hero(
-                      tag: 'image$index',
-                      child: Image.network(
-                        //rendom image generator
-                        'https://picsum.photos/200/300?random=${index + 1}',
-                        height: 200,
-                        width: 200,
-                        fit: BoxFit.cover,
-                      ),
+                      tag: '$index',
+                      child: model.images.isEmpty
+                          ? Container(
+                              height: 200,
+                              width: 200,
+                              color: Colors.grey,
+                            )
+                          : Image.network(
+                              model.images[index].path,
+                              height: 200,
+                              width: 200,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                 ),
@@ -43,62 +98,59 @@ class ProductPreview extends StatelessWidget {
             ),
             //------------------name
             Text(
-              'Iphone 13 Pro Max',
-              style: typetheme.title,
+              model.name,
+              style: typetheme.display,
             ),
             DualText(
-              typetheme1:
-                  typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
-              typetheme2: typetheme.bodyLarge,
+              typetheme1: typetheme.title,
+              typetheme2:
+                  typetheme.title!.copyWith(fontWeight: FontWeight.normal),
               text1: 'Product ID : ',
-              text2: '38odzpssRIxEi8XRtxCXg',
+              text2: model.pID,
             ),
             //------------------price
             DualText(
-              typetheme1:
-                  typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
-              typetheme2: typetheme.bodyLarge,
+              typetheme1: typetheme.title,
+              typetheme2:
+                  typetheme.title!.copyWith(fontWeight: FontWeight.normal),
               text1: 'Price : \$ ',
-              text2: NumberFormat().format(76000),
+              text2: NumberFormat().format(model.price),
             ),
             //------------------Discount
             DualText(
-              typetheme1:
-                  typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
-              typetheme2: typetheme.bodyLarge,
+              typetheme1: typetheme.title,
+              typetheme2:
+                  typetheme.title!.copyWith(fontWeight: FontWeight.normal),
               text1: 'Discount Price : \$ ',
-              text2: NumberFormat().format(75000),
+              text2: NumberFormat().format(model.discountPrice),
             ),
             //------------------brand
             DualText(
-              typetheme1:
-                  typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
-              typetheme2: typetheme.bodyLarge,
+              typetheme1: typetheme.title,
+              typetheme2:
+                  typetheme.title!.copyWith(fontWeight: FontWeight.normal),
               text1: 'Brand : ',
-              text2: 'Apple',
+              text2: model.brand,
             ),
             //------------------category
             DualText(
-              typetheme1:
-                  typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
-              typetheme2: typetheme.bodyLarge,
+              typetheme1: typetheme.title,
+              typetheme2:
+                  typetheme.title!.copyWith(fontWeight: FontWeight.normal),
               text1: 'Category : ',
-              text2: 'Phone',
+              text2: model.category,
             ),
             //------------------description
             Text(
               'Description :',
-              style: typetheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+              style: typetheme.title,
             ),
             Text(
-              r'''
-Equipped with high-end specifications, iPhone 13 Pro Max is the newly launched
-smartphone amongst iPhone 13 series that includes iPhone 13, iPhone 13 mini,
-and iPhone 13 Pro. The mobile comes with 5G connectivity support and is 
-available at a starting price of Rs 1,29,900 in Graphite, Gold, Silver,
-Sierra Blue color variants.
+              '''
+${model.description}
+              
 ''',
-              style: typetheme.bodyLarge,
+              style: typetheme.title!.copyWith(fontWeight: FontWeight.normal),
             ),
           ],
         ),

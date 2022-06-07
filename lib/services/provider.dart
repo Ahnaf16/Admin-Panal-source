@@ -32,3 +32,21 @@ final categoryListProvider = StateProvider<List>((ref) {
 final obscureTextProvider = StateProvider<bool>((ref) {
   return true;
 });
+
+List<String> get catagoryListProvider {
+  return [
+    'Official Phone',
+    'Unofficial Phone',
+    'Used Phone',
+    'Power Bank',
+    'Wired Earphone',
+    'Wireless Earphone',
+    'Headphone',
+    'Sound Box',
+    'Smart Watch',
+    'Analog Watch',
+    'Addapter & Cable',
+    'TV',
+    'Others',
+  ];
+}
