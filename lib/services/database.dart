@@ -62,7 +62,36 @@ class StorageProvider {
 
   final FirebaseStorage storage;
 
-  Future<List<String>> uploadImage({
+  get getProgres => progres;
+
+  double progres = 0.0;
+
+  Future<String> uploadSingelImage({
+    required String path,
+    required String fileName,
+    required XFile img,
+  }) async {
+    String finalurl = '';
+
+    await EasyLoading.show(status: 'Uploading images');
+    final reference =
+        storage.ref().child('$path/$fileName').child('${fileName}_');
+    // reference.putFile(File(img.path));
+    final uptask = reference.putData(
+      await img.readAsBytes(),
+      SettableMetadata(contentType: 'image/jpeg'),
+    );
+
+    final url = await uptask.then(
+      (snap) => snap.ref.getDownloadURL(),
+    );
+    finalurl = url;
+    await EasyLoading.showSuccess('Image Uploaded');
+
+    return finalurl;
+  }
+
+  Future<List<String>> uploadMultiImage({
     required String path,
     required String fileName,
     required List<XFile> imgs,
@@ -99,7 +128,7 @@ class ImgSelector {
 
   final ImagePicker imagePicker;
 
-  Future<List<XFile>?> getImage({
+  Future<List<XFile>?> getMultiImgs({
     required String path,
     required String fileName,
   }) async {
@@ -110,6 +139,19 @@ class ImgSelector {
         selectedImgs.add(xfile);
       }
       return selectedImgs;
+    }
+    return null;
+  }
+
+  Future<XFile?> getImg({
+    required String path,
+    required String fileName,
+  }) async {
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      XFile selectedImg = pickedFile;
+
+      return selectedImg;
     }
     return null;
   }

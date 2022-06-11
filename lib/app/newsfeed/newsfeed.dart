@@ -1,10 +1,26 @@
+import 'dart:math';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gngm_web/services/database.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../widgets/widget_export.dart';
 
-class Newsfeed extends StatelessWidget {
-  Newsfeed({Key? key}) : super(key: key);
+class Newsfeed extends StatefulWidget {
+  const Newsfeed({Key? key}) : super(key: key);
 
+  @override
+  State<Newsfeed> createState() => _NewsfeedState();
+}
+
+class _NewsfeedState extends State<Newsfeed> {
   final FlyoutController flyoutController = FlyoutController();
+
+  final fireStorage = StorageProvider(storage: FirebaseStorage.instance);
+
+  final pickImg = ImgSelector(imagePicker: ImagePicker());
+
+  XFile selectedImg = XFile('');
 
   @override
   Widget build(BuildContext context) {
@@ -13,24 +29,19 @@ class Newsfeed extends StatelessWidget {
         title: const Text('Newsfeed'),
         commandBar: Row(
           children: [
-            //------------------add button
-            // OutlinedButton(
-            //   child: Row(
-            //     children: const [
-            //       Icon(FluentIcons.add),
-            //       SizedBox(width: 10),
-            //       Text('Add Newsfeed'),
-            //     ],
-            //   ),
-            //   onPressed: () {},
-            // ),
-            // const SizedBox(width: 10),
             //------------------publish button
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: FilledButton(
                 child: const Text('Publish'),
-                onPressed: () {},
+                onPressed: () {
+                  fireStorage.uploadSingelImage(
+                    path: 'test',
+                    fileName: Random(2).toString(),
+                    img: selectedImg,
+                  );
+                  log(fireStorage.getProgres);
+                },
                 style: FluentTheme.of(context).buttonTheme.filledButtonStyle,
               ),
             ),
@@ -50,7 +61,18 @@ class Newsfeed extends StatelessWidget {
                   cursor: SystemMouseCursors.click,
                   child: IconButton(
                     icon: const Icon(FluentIcons.file_image),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await pickImg
+                          .getImg(
+                            path: 'Path',
+                            fileName: 'fileName',
+                          )
+                          .then(
+                            (img) => setState(() {
+                              selectedImg = img!;
+                            }),
+                          );
+                    },
                     style: ButtonStyle(
                       padding: ButtonState.all<EdgeInsets>(
                         const EdgeInsets.all(20),
@@ -93,9 +115,18 @@ class Newsfeed extends StatelessWidget {
                       ],
                     );
                   },
-                  child: const CachedNetImg(
-                    url: 'https://picsum.photos/id/112/500/200',
-                  ),
+                  child: selectedImg.name == ''
+                      ? Container(
+                          color: Colors.grey[50],
+                          width: 500,
+                          height: 200,
+                        )
+                      : Image.network(
+                          selectedImg.path,
+                          width: 500,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
             ],

@@ -127,25 +127,22 @@ class _AddProductState extends State<AddProduct> {
       header: PageHeader(
         title: const Text('Add Product'),
         commandBar: Expanded(
-          child: CommandBarCard(
-            child: CommandBar(
-              mainAxisAlignment: MainAxisAlignment.end,
-              primaryItems: [
-                CommandBarButton(
-                  onPressed: () => publishCondition(),
-                  icon: const Icon(FluentIcons.upload),
-                  label: const Text('Publish Product'),
-                ),
-                CommandBarButton(
-                  onPressed: () {
-                    clearAll();
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(FluentIcons.clear),
-                  label: const Text('Clear All Fields'),
-                ),
-              ],
-            ),
+          child: CommandBar(
+            mainAxisAlignment: MainAxisAlignment.end,
+            primaryItems: [
+              CommandBarButton(
+                onPressed: () => publishCondition(),
+                icon: const Icon(FluentIcons.upload),
+                label: const Text('Publish Product'),
+              ),
+              CommandBarButton(
+                onPressed: () {
+                  clearAll();
+                },
+                icon: const Icon(FluentIcons.clear),
+                label: const Text('Clear All Fields'),
+              ),
+            ],
           ),
         ),
       ),
@@ -417,7 +414,7 @@ class _AddProductState extends State<AddProduct> {
           CommandBarButton(
             onPressed: () {
               imgSelector
-                  .getImage(path: 'path', fileName: 'fileName')
+                  .getMultiImgs(path: 'path', fileName: 'fileName')
                   .then((imgs) => {
                         setState(() {
                           selectedImage.addAll(imgs!);

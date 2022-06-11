@@ -39,7 +39,7 @@ class ProductPreview extends StatelessWidget {
                 CommandBarButton(
                   onPressed: () async {
                     await fireStorage
-                        .uploadImage(
+                        .uploadMultiImage(
                           path: 'itemList',
                           fileName: model.name,
                           imgs: model.images,
