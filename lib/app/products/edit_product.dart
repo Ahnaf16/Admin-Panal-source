@@ -18,7 +18,7 @@ class EditProduct extends StatefulWidget {
 class _EditProductState extends State<EditProduct> {
   bool discountSwitch = false;
   int cIndex = -1;
-
+  final categorys = catagoryListProvider;
   FlyoutController flyoutController = FlyoutController();
 
   final TextEditingController pIDController = TextEditingController();
@@ -417,8 +417,7 @@ class _EditProductState extends State<EditProduct> {
         //-------------------categorys radio button
         Consumer(
           builder: (context, ref, child) {
-            final categorys =
-                ref.watch(categoryListProvider); //testing riverpod??
+            //testing riverpod??
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: List.generate(

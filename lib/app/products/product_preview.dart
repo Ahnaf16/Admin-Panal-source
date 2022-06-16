@@ -34,23 +34,25 @@ class ProductPreview extends StatelessWidget {
         commandBar: Expanded(
           child: CommandBarCard(
             child: CommandBar(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               primaryItems: [
                 CommandBarButton(
                   onPressed: () async {
                     await fireStorage
                         .uploadMultiImage(
-                          path: 'itemList',
+                          path: productsPath,
                           fileName: model.name,
-                          imgs: model.images,
+                          imgs: model.images!,
                         )
                         .then((urls) => imgUrls.addAll(urls));
 
-                    await fireProvider.addData(
-                      path: 'itemsList',
-                      fromModel: model,
-                      imgUrls: imgUrls,
-                    );
+                    await fireProvider
+                        .addData(
+                          path: 'itemsList',
+                          fromModel: model,
+                          imgUrls: imgUrls,
+                        )
+                        .whenComplete(() => Navigator.pop(context));
                   },
                   icon: const Icon(FluentIcons.upload),
                   label: const Text('Publish'),
@@ -68,21 +70,21 @@ class ProductPreview extends StatelessWidget {
             //---------------------------Product images
             Wrap(
               children: List.generate(
-                model.images.length,
+                model.images!.length,
                 (index) => Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Hero(
                       tag: '$index',
-                      child: model.images.isEmpty
+                      child: model.images!.isEmpty
                           ? Container(
                               height: 200,
                               width: 200,
                               color: Colors.grey,
                             )
                           : Image.network(
-                              model.images[index].path,
+                              model.images![index].path,
                               height: 200,
                               width: 200,
                               fit: BoxFit.cover,

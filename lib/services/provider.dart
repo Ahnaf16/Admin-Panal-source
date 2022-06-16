@@ -19,16 +19,6 @@ final orderStstusChangeerProvider = StateProvider<String?>((ref) {
   return null;
 });
 
-final categoryListProvider = StateProvider<List>((ref) {
-  return [
-    'Phone',
-    'Wired Earphone',
-    'Wireless Earphone',
-    'Addapter',
-    'Others',
-  ];
-});
-
 final obscureTextProvider = StateProvider<bool>((ref) {
   return true;
 });

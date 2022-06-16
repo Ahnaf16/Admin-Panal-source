@@ -68,9 +68,7 @@ class _AddProductState extends State<AddProduct> {
   }
 
   publishCondition() async {
-    if (selectedImage.isEmpty) {
-      easytoast('image');
-    } else if (nameCtrl.text.isEmpty) {
+    if (nameCtrl.text.isEmpty) {
       easytoast('name');
     } else if (brandCtrl.text.isEmpty) {
       easytoast('brand');
@@ -82,6 +80,8 @@ class _AddProductState extends State<AddProduct> {
       easytoast('discount');
     } else if (categoryIndex == -1) {
       easytoast('category');
+    } else if (selectedImage.isEmpty) {
+      easytoast('image');
     } else {
       await EasyLoading.show();
       pubishPreview(context);
@@ -125,15 +125,20 @@ class _AddProductState extends State<AddProduct> {
   Widget build(BuildContext context) {
     return ScaffoldPage(
       header: PageHeader(
-        title: const Text('Add Product'),
+        title: const Text('Add Product '),
         commandBar: Expanded(
           child: CommandBar(
             mainAxisAlignment: MainAxisAlignment.end,
             primaryItems: [
               CommandBarButton(
-                onPressed: () => publishCondition(),
-                icon: const Icon(FluentIcons.upload),
-                label: const Text('Publish Product'),
+                onPressed: () {
+                  publishCondition();
+                  setState(() {
+                    pIDctrl.text = nanoid();
+                  });
+                },
+                icon: const Icon(FluentIcons.preview_link),
+                label: const Text('Priview Product'),
               ),
               CommandBarButton(
                 onPressed: () {

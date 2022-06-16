@@ -1,20 +1,14 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import '../../widgets/widget_export.dart';
+import 'package:gngm_web/app/products/upload_model.dart';
 import 'edit_product.dart';
 
-class ProductModel {
-  final String name;
-  final String image;
-  final double price;
+class ProductTiles extends StatelessWidget {
+  const ProductTiles({Key? key, required this.product}) : super(key: key);
+  final ProductUploadModel product;
 
-  ProductModel({
-    required this.name,
-    required this.image,
-    required this.price,
-  });
-
-  productWidget(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Card(
       // backgroundColor: Colors.grey[30],
       elevation: 3,
@@ -25,20 +19,20 @@ class ProductModel {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              //-------------------image
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: CachedNetImg(
-                  url: image,
-                  // width: 100,
-                ),
-              ),
-            ),
+            // Center(
+            //   //-------------------image
+            //   child: ClipRRect(
+            //     borderRadius: BorderRadius.circular(10),
+            //     child: Image.network(
+            //       product.imgUrls![0],
+            //       width: 100,
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 10),
             //-------------------name
             Text(
-              name,
+              product.name,
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -47,7 +41,7 @@ class ProductModel {
             const SizedBox(height: 10),
             //-------------------price
             Text(
-              '\$$price',
+              '\$${product.price}',
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,

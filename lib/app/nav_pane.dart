@@ -17,7 +17,7 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-int index = 2;
+int index = 1;
 
 class _NavigationPageState extends State<NavigationPage> {
   @override
@@ -117,16 +117,16 @@ class _NavigationPageState extends State<NavigationPage> {
           transitionBuilder: (child, animation) =>
               EntrancePageTransition(child: child, animation: animation),
           index: index,
-          children: [
-            const Dash(),
-            const Products(),
-            const AddProduct(),
-            const OrderList(),
-            const Campaign(),
-            const Flash(),
+          children: const [
+            Dash(),
+            Products(),
+            AddProduct(),
+            OrderList(),
+            Campaign(),
+            Flash(),
             Newsfeed(),
-            const LoginPage(),
-            const Settings(),
+            LoginPage(),
+            Settings(),
           ],
         ),
       ),

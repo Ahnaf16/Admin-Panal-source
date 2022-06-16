@@ -1,8 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import '../app/products/upload_model.dart';
+
+class Fields {
+  static const String itemName = 'product_name';
+  static const String itemBrand = 'product_brand';
+  static const String itemPrice = 'product_price';
+  static const String discountPrice = 'discount_price';
+  static const String haveDiscount = 'haveDiscount';
+  static const String description = 'product_desc';
+  static const String category = 'category';
+  static const String imgs = 'imgs';
+  static const String pID = 'pId';
+  static const String date = 'dateAdded';
+}
+
+const String productsPath = 'itemList';
 
 class FirestoreProvider {
   FirestoreProvider({
@@ -10,7 +26,8 @@ class FirestoreProvider {
   });
 
   final FirebaseFirestore firestore;
-  final RegExp notValidDocId = RegExp(r'[ ()\/*+^%#@!&$]');
+  final auth = FirebaseAuth.instance;
+  final RegExp notValidDocId = RegExp(r'[ (){}\/*+^%#@!&$]');
 
   Future<void> addData({
     required String path,
@@ -22,21 +39,25 @@ class FirestoreProvider {
           fromModel.name.replaceAll(notValidDocId, '_'),
         );
     reference.set({
-      'pID': fromModel.pID,
-      'name': fromModel.name,
-      'brand': fromModel.brand,
-      'description': fromModel.description,
-      'images': imgUrls,
-      'price': fromModel.price,
-      'discountPrice': fromModel.discountPrice,
+      'pId': fromModel.pID,
+      'product_name': fromModel.name,
+      'product_brand': fromModel.brand,
+      'product_price': fromModel.price,
+      'discount_price': fromModel.discountPrice,
       'haveDiscount': fromModel.haveDiscount,
+      'product_desc': fromModel.description,
       'category': fromModel.category,
-      'date': DateTime.now(),
+      'imgs': imgUrls,
+      'dateAdded': DateTime.now(),
+      'Employee': {
+        "name": 'not loggeg in', //auth.currentUser!.displayName ?? '',
+        "uid": 'not loggeg in', // auth.currentUser!.uid,
+      },
     });
     await EasyLoading.showSuccess('Product Added');
   }
 
-  Stream<QuerySnapshot> streamDataCollection({
+  Stream<QuerySnapshot> showProducts({
     required String path,
   }) {
     final reference = firestore.collection(path);
