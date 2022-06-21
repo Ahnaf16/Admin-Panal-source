@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutterfire_ui/firestore.dart';
+import 'package:gngm_web/app/products/prodact_tile.dart';
 import 'package:gngm_web/app/products/upload_model.dart';
 import 'package:gngm_web/services/provider.dart';
 
+import '../../services/database.dart';
 import '../../theme.dart';
 import '../../widgets/widget_export.dart';
 
@@ -17,24 +20,9 @@ class Products extends StatefulWidget {
 class _ProductsState extends State<Products> {
   final categorys = catagoryListProvider;
   String? category;
-
-  late ScrollController scrollController;
+  ScrollController scrollController = ScrollController();
   bool showScrollButton = false;
-
-  @override
-  void initState() {
-    super.initState();
-    scrollController = ScrollController()
-      ..addListener(() {
-        setState(() {
-          if (scrollController.offset >= 1) {
-            showScrollButton = true;
-          } else {
-            showScrollButton = false;
-          }
-        });
-      });
-  }
+  final fireProvider = FirestoreProvider(firestore: FirebaseFirestore.instance);
 
   @override
   void dispose() {
@@ -48,50 +36,80 @@ class _ProductsState extends State<Products> {
       header: const PageHeader(
         title: Text('Products'),
       ),
-      content: Stack(
+      content: Column(
         children: [
-          BaseBody(
-            scrollController: scrollController,
-            widthfactor: 1.3,
-            children: [
-              Row(
-                children: [
-                  searchBox(),
-                  const SizedBox(width: 20),
-                  categotyBox(),
-                  const SizedBox(width: 20),
-                ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width / 1.3,
+                child: Row(
+                  children: [
+                    searchBox(),
+                    const SizedBox(width: 20),
+                    categotyBox(),
+                    if (category != null)
+                      IconButton(
+                        icon: const Icon(FluentIcons.reset),
+                        onPressed: () {
+                          setState(() {
+                            category = null;
+                          });
+                        },
+                      ),
+                    const SizedBox(width: 20),
+                  ],
+                ),
               ),
-              const SizedBox(height: 20),
-              const Divider(),
-              const SizedBox(height: 20),
-              //------------------------------------all products
-              FirestoreListView<ProductUploadModel>(
-                query: FirebaseFirestore.instance
-                    .collection('itemsList')
-                    .withConverter(
-                      fromFirestore: ((snapshot, options) =>
-                          ProductUploadModel.fromJson(snapshot.data()!)),
-                      toFirestore: (model, options) => model.toJson(),
-                    ),
-                shrinkWrap: true,
-                itemBuilder: (context, snap) {
-                  final data = snap.data();
-                  return ListTile(
-                    title: Text(
-                      data.name,
-                    ),
-                    leading: Image.network(
-                      data.imgUrls![0],
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
-              )
-            ],
+            ),
+          ),
+          Expanded(
+            child: BaseBody(
+              scrollController: scrollController,
+              widthfactor: 1.3,
+              children: [
+                const SizedBox(height: 20),
+                const Divider(),
+                const SizedBox(height: 20),
+                //------------------------------------all products
+
+                FirestoreQueryBuilder<ProductModel>(
+                  query: category == null
+                      ? fireProvider.getAppProducts()
+                      : fireProvider.filteSingelProdut(
+                          filterWith: category!,
+                          matchingField: Fields.category,
+                        ),
+                  builder: (context, snapshot, _) {
+                    if (snapshot.isFetching) {
+                      return const ProgressRing();
+                    }
+
+                    if (snapshot.hasError) {
+                      return Text('Something went wrong! ${snapshot.error}');
+                    }
+
+                    return StaggeredGrid.count(
+                      crossAxisCount: 5,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      children: List.generate(
+                        snapshot.docs.length,
+                        (index) {
+                          final data = snapshot.docs[index].data();
+                          return ProductTiles(data: data);
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
           //---------------------------- scrool to top
-          showScrollButton == true ? goToTop() : Container(),
+
+          // if (showScrollButton == true) goToTop(),
         ],
       ),
     );

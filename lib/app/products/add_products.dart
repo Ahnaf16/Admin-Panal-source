@@ -43,7 +43,7 @@ class _AddProductState extends State<AddProduct> {
           maxWidth: MediaQuery.of(context).size.width / 1.3,
         ),
         content: ProductPreview(
-          model: ProductUploadModel(
+          model: ProductModel(
             pID: pIDctrl.text,
             name: nameCtrl.text,
             brand: brandCtrl.text,

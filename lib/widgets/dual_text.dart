@@ -22,7 +22,7 @@ class DualText extends StatelessWidget {
           text1,
           style: typetheme1,
         ),
-        Text(
+        SelectableText(
           text2,
           style: typetheme2,
         ),

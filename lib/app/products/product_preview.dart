@@ -10,14 +10,41 @@ class ProductPreview extends StatelessWidget {
   ProductPreview({
     Key? key,
     required this.model,
+    this.showPublishButton = true,
   }) : super(key: key);
 
-  final ProductUploadModel model;
+  final bool showPublishButton;
+
+  final ProductModel model;
 
   final List<String> imgUrls = [];
 
   final fireProvider = FirestoreProvider(firestore: FirebaseFirestore.instance);
   final fireStorage = StorageProvider(storage: FirebaseStorage.instance);
+
+  imgwidget(index) {
+    if (model.images != null) {
+      return Image.network(
+        model.images![index].path,
+        height: 200,
+        width: 200,
+        fit: BoxFit.cover,
+      );
+    } else if (model.imgUrls != null) {
+      return CachedNetImg(
+        url: model.imgUrls![index],
+        height: 200,
+        width: 200,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Container(
+        height: 200,
+        width: 200,
+        color: Colors.grey,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,36 +58,38 @@ class ProductPreview extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
         ),
-        commandBar: Expanded(
-          child: CommandBarCard(
-            child: CommandBar(
-              mainAxisAlignment: MainAxisAlignment.end,
-              primaryItems: [
-                CommandBarButton(
-                  onPressed: () async {
-                    await fireStorage
-                        .uploadMultiImage(
-                          path: productsPath,
-                          fileName: model.name,
-                          imgs: model.images!,
-                        )
-                        .then((urls) => imgUrls.addAll(urls));
+        commandBar: showPublishButton
+            ? Expanded(
+                child: CommandBarCard(
+                  child: CommandBar(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    primaryItems: [
+                      CommandBarButton(
+                        onPressed: () async {
+                          await fireStorage
+                              .uploadMultiImage(
+                                path: productsPath,
+                                fileName: model.name,
+                                imgs: model.images!,
+                              )
+                              .then((urls) => imgUrls.addAll(urls));
 
-                    await fireProvider
-                        .addData(
-                          path: 'itemsList',
-                          fromModel: model,
-                          imgUrls: imgUrls,
-                        )
-                        .whenComplete(() => Navigator.pop(context));
-                  },
-                  icon: const Icon(FluentIcons.upload),
-                  label: const Text('Publish'),
+                          await fireProvider
+                              .addData(
+                                path: 'itemsList',
+                                fromModel: model,
+                                imgUrls: imgUrls,
+                              )
+                              .whenComplete(() => Navigator.pop(context));
+                        },
+                        icon: const Icon(FluentIcons.upload),
+                        label: const Text('Publish'),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              )
+            : Container(),
       ),
       content: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -70,25 +99,16 @@ class ProductPreview extends StatelessWidget {
             //---------------------------Product images
             Wrap(
               children: List.generate(
-                model.images!.length,
+                model.images == null
+                    ? model.imgUrls!.length
+                    : model.images!.length,
                 (index) => Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Hero(
                       tag: '$index',
-                      child: model.images!.isEmpty
-                          ? Container(
-                              height: 200,
-                              width: 200,
-                              color: Colors.grey,
-                            )
-                          : Image.network(
-                              model.images![index].path,
-                              height: 200,
-                              width: 200,
-                              fit: BoxFit.cover,
-                            ),
+                      child: imgwidget(index),
                     ),
                   ),
                 ),
@@ -99,9 +119,9 @@ class ProductPreview extends StatelessWidget {
               child: Divider(),
             ),
             //------------------name
-            Text(
+            SelectableText(
               model.name,
-              style: typetheme.display,
+              style: typetheme.titleLarge,
             ),
             DualText(
               typetheme1: typetheme.title,
@@ -116,7 +136,7 @@ class ProductPreview extends StatelessWidget {
               typetheme2:
                   typetheme.title!.copyWith(fontWeight: FontWeight.normal),
               text1: 'Price : \$ ',
-              text2: NumberFormat().format(model.price),
+              text2: NumberFormat('##,##,###').format(model.price),
             ),
             //------------------Discount
             DualText(
@@ -124,7 +144,7 @@ class ProductPreview extends StatelessWidget {
               typetheme2:
                   typetheme.title!.copyWith(fontWeight: FontWeight.normal),
               text1: 'Discount Price : \$ ',
-              text2: NumberFormat().format(model.discountPrice),
+              text2: NumberFormat('##,##,###').format(model.discountPrice),
             ),
             //------------------brand
             DualText(

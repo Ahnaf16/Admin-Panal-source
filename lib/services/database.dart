@@ -18,7 +18,7 @@ class Fields {
   static const String date = 'dateAdded';
 }
 
-const String productsPath = 'itemList';
+const String productsPath = 'itemsList';
 
 class FirestoreProvider {
   FirestoreProvider({
@@ -31,7 +31,7 @@ class FirestoreProvider {
 
   Future<void> addData({
     required String path,
-    required ProductUploadModel fromModel,
+    required ProductModel fromModel,
     required List<String> imgUrls,
   }) async {
     await EasyLoading.show(status: 'Adding Product...');
@@ -39,16 +39,16 @@ class FirestoreProvider {
           fromModel.name.replaceAll(notValidDocId, '_'),
         );
     reference.set({
-      'pId': fromModel.pID,
-      'product_name': fromModel.name,
-      'product_brand': fromModel.brand,
-      'product_price': fromModel.price,
-      'discount_price': fromModel.discountPrice,
-      'haveDiscount': fromModel.haveDiscount,
-      'product_desc': fromModel.description,
-      'category': fromModel.category,
-      'imgs': imgUrls,
-      'dateAdded': DateTime.now(),
+      Fields.itemName: fromModel.name,
+      Fields.itemBrand: fromModel.brand,
+      Fields.itemPrice: fromModel.price,
+      Fields.discountPrice: fromModel.discountPrice,
+      Fields.haveDiscount: fromModel.haveDiscount,
+      Fields.description: fromModel.description,
+      Fields.category: fromModel.category,
+      Fields.pID: fromModel.pID,
+      Fields.date: DateTime.now().toString(),
+      Fields.imgs: imgUrls,
       'Employee': {
         "name": 'not loggeg in', //auth.currentUser!.displayName ?? '',
         "uid": 'not loggeg in', // auth.currentUser!.uid,
@@ -57,11 +57,25 @@ class FirestoreProvider {
     await EasyLoading.showSuccess('Product Added');
   }
 
-  Stream<QuerySnapshot> showProducts({
-    required String path,
+  Query<ProductModel> getAppProducts() {
+    final reference = firestore.collection(productsPath);
+    return reference.withConverter(
+      fromFirestore: ((snapshot, options) =>
+          ProductModel.fromJson(snapshot.data()!)),
+      toFirestore: (model, options) => model.toJson(),
+    );
+  }
+
+  Query<ProductModel> filteSingelProdut({
+    required String filterWith,
+    required String matchingField,
   }) {
-    final reference = firestore.collection(path);
-    return reference.snapshots();
+    final reference = firestore.collection(productsPath);
+    return reference.where(matchingField, isEqualTo: filterWith).withConverter(
+          fromFirestore: ((snapshot, options) =>
+              ProductModel.fromJson(snapshot.data()!)),
+          toFirestore: (model, options) => model.toJson(),
+        );
   }
 
   Future<void> updateData(

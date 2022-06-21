@@ -81,7 +81,7 @@ class _EditProductState extends State<EditProduct> {
                     maxWidth: MediaQuery.of(context).size.width / 1.3,
                   ),
                   content: ProductPreview(
-                    model: const ProductUploadModel(
+                    model: const ProductModel(
                       pID: '',
                       name: '',
                       brand: '',

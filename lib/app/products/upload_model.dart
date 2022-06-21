@@ -1,8 +1,8 @@
 import 'package:gngm_web/services/database.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProductUploadModel {
-  const ProductUploadModel({
+class ProductModel {
+  const ProductModel({
     required this.name,
     required this.price,
     required this.discountPrice,
@@ -15,7 +15,7 @@ class ProductUploadModel {
     required this.haveDiscount,
   });
 
-  ProductUploadModel.fromJson(Map<String, dynamic> json)
+  ProductModel.fromJson(Map<String, dynamic> json)
       : this(
           name: json[Fields.itemName] as String,
           price: json[Fields.itemPrice] as int,
